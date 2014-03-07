@@ -74,7 +74,7 @@ def createCharacter(name, statLower, statUpper, skillBonus, strengthBonus, stami
     character = fighter()
     
     if(name == ''):
-        character.name = str(raw_input("Give your character a name: "))
+        character.name = str(input("Give your character a name: "))
     else:
         character.name = str(name)
     
