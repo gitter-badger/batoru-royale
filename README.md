@@ -3,6 +3,6 @@ batoru-royale
 
 Learning Python the fun way.
 
-# prerequisites
+## prerequisites ##
 
 - Python 3.x
