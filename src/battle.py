@@ -3,24 +3,7 @@ import random
 import math
 import time
 from fighter import fighter
-
-def combatScroll(winner, looser, damage, gain):
-    
-    if gain > 0:
-        if damage > 0:
-            print(winner.name + " has knocked " + str(damage) + " hit points from " + looser.name + "!")
-        else:
-            print(winner.name + " checked " + looser.name + " for weaknesses!")
-              
-              
-        print(winner.name + " gained " + str(gain) + " attack points!")
-    else:
-        print("Both fighters miss their swings! Pathetic!")
-
-    print("After this round " + winner.name + " has < " + str(winner.skill) + " ap | " + str(winner.stamina) + " hp >")
-    print("After this round " + looser.name + " has < " + str(looser.skill) + " ap | "  + str(looser.stamina) + " hp >\n")
-
-
+from combat import combat
 
 def createCharacter(name, statLower, statUpper, skillBonus, strengthBonus, staminaBonus):
     
@@ -35,25 +18,25 @@ def createCharacter(name, statLower, statUpper, skillBonus, strengthBonus, stami
     statToUseNext = random.randint(1,2)
     
     randOne = random.randint(0,statUpper)
-    # print("First random: " + str(randOne)  + "\n")
+    print("First random: " + str(randOne)  + "\n")
           
     restRand = statUpper - int(randOne)
-    # print("Rest random: " + str(restRand)  + "\n")
+    print("Rest random: " + str(restRand)  + "\n")
     
     randTwo = random.randint(restRand,statUpper)
-    #print("Second random: " + str(randTwo)  + "\n")
+    print("Second random: " + str(randTwo)  + "\n")
     
     statToAdd = statLower + int(randOne)
-    #print("First stat: " + str(statToAdd) + "\n")
+    print("First stat: " + str(statToAdd) + "\n")
 
     statToAddNext = statLower + int(randTwo)
-    #print("Second stat: " + str(statToAddNext) + "\n")
+    print("Second stat: " + str(statToAddNext) + "\n")
 
     statLeft = int(statUpper*3) - int(statToAdd) - int(statToAddNext)
-    #print("Third stat: " + str(statLeft) + "\n")
+    print("Third stat: " + str(statLeft) + "\n")
     
     statTotal = statToAdd + statToAddNext + statLeft
-    #print("Total stat: " + str(statTotal) + "\n")
+    print("Total stat: " + str(statTotal) + "\n")
     
     if statToUse == 1:
         
@@ -118,19 +101,21 @@ def logEvent(text):
 
 
 def battle():
+
+    fight = combat()
+    fight.enabledScroll = 'true'
     
     logEvent("\n******************************************")
-
     
-    playerOne = createCharacter('',10,70,25,0,0)
-    playerTwo = createCharacter('Ogre',20,60,0,0,0)
+    playerOne = createCharacter('Ishino',20,80,0,0,0)
+    playerTwo = createCharacter('Ogre',20,80,0,0,0)
     
     # log the start stats
     
     logEvent("------------------------------------------")
     print("\n\n")
    
-    time.sleep(2)
+    time.sleep(1)
     
     round = 1
     
@@ -148,7 +133,7 @@ def battle():
            playerOne.awardPlayer(skillModifier)
            playerTwo.punishPlayer(damage,skillModifier)
     
-           # combatScroll(playerOne, playerTwo, damage, skillModifier)
+           fight.scroll(playerOne, playerTwo, damage, skillModifier)
 
        elif result == 2:
            
@@ -159,10 +144,10 @@ def battle():
            playerTwo.awardPlayer(skillModifier)
            playerOne.punishPlayer(damage,skillModifier)
            
-           # combatScroll(playerTwo, playerOne, damage, skillModifier)
+           fight.scroll(playerTwo, playerOne, damage, skillModifier)
 
-       # else:
-           # combatScroll(playerTwo, playerOne, 0, 0)
+       else:
+           fight.scroll(playerTwo, playerOne, 0, 0)
 
        if not playerOne.isAlive():
            eventText = "After " + str(round) + " rounds, " + playerTwo.name + " won!"
@@ -176,8 +161,8 @@ def battle():
            print(eventText + "\n")
            logEvent("******************************************")
            break
-       # You can slow the fight down by uncommenting below line.
-       # time.sleep(0.5)
+       # You can slow the fight down by un-commenting the line below.
+       time.sleep(0.0)
        round = round+1
 
 battle()
