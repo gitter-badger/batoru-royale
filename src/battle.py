@@ -13,7 +13,7 @@ def createCharacter(name, level, skillBonus, strengthBonus, staminaBonus):
 
     character = fighter()
     fight = combatLogs()
-    fight.logLevel = 0
+    fight.logLevel = 1
 
     if(name == ''):
         character.name = str(input("Give your character a name: "))
@@ -147,6 +147,7 @@ def battle(playerOne,playerTwo):
            fight.logEvent(eventText,1)
            fight.logEvent("******************************************",1)
            stats.registerWin(playerOne)
+           playerOne.levelUp()
            playerOne.calculateStats()
            playerTwo.calculateStats()
            break
@@ -154,15 +155,18 @@ def battle(playerOne,playerTwo):
 
 def tournament(rounds):
     fight = combatLogs()
-    fight.logLevel = 0
+    fight.logLevel = 1
+
+    fight.logEvent("\n******************************************",0)
+    playerOne = createCharacter('Ishino',1,0,0,0)
+    fight.logEvent("------------------------------------------",0)
 
     stats = combatStats()
 
     for i in range(int(rounds)):
-        fight.logEvent("\n******************************************",0)
-        playerOne = createCharacter('Ishino',15,0,0,0)
-        playerTwo = createCharacter('Akira',15,0,0,0)
-        fight.logEvent("------------------------------------------",0)
+        eventText = "At level " + str(playerOne.level) + " " + playerOne.name + " has < " + str(playerOne.skill) + " ap | " + str(playerOne.strength) + " str | " + str(playerOne.stamina) + " sta | " + str(playerOne.hitPoints) + " hp >"
+        fight.logEvent(eventText,0)
+        playerTwo = createCharacter('Ogre',playerOne.level,0,0,0)
         battle(playerOne,playerTwo)
 
     tournament = stats.getStats()
@@ -171,4 +175,4 @@ def tournament(rounds):
         for type in tournament[player]:
             print(str(player) + " - Type " + str(type) + ": " + str(tournament[player][type]))
 
-tournament(10000)
+tournament(1000)

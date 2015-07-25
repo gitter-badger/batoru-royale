@@ -7,6 +7,7 @@ class fighter:
     name = ''
     type = 'D'
     typeStat = 1
+    level = 1
 
     skill = 1
     fightSkill = 1
@@ -23,6 +24,41 @@ class fighter:
 
     offenceReduction = 100
     defenceReduction = 100
+
+    experience = 0
+
+    def levelUp(self):
+        self.level = self.level + 1
+
+        if self.type == 'A':
+            self.strength = self.strength + 6
+            self.stamina = self.stamina + 6
+
+        if self.type == 'B':
+            self.stamina = self.stamina + 6
+            self.skill = self.skill + 6
+
+        if self.type == 'C':
+            self.skill = self.skill + 6
+            self.strength = self.strength + 6
+
+        if self.type == 'D':
+            self.skill = self.skill + 6
+            self.strength = self.strength + 3
+            self.stamina = self.stamina + 3
+
+        if self.type == 'E':
+            self.skill = self.skill + 3
+            self.strength = self.strength + 6
+            self.stamina = self.stamina + 3
+
+        if self.type == 'F':
+            self.skill = self.skill + 3
+            self.strength = self.strength + 3
+            self.stamina = self.stamina + 6
+
+        self.calculateStats()
+
 
     def calculateStats(self):
         self.hitPoints = self.hitPointsBase * self.stamina
