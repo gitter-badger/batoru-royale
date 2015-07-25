@@ -4,6 +4,7 @@ import math
 import time
 from fighter import fighter
 from combatLogs import combatLogs
+from stats import combatStats
 
 def createCharacter(name, level, skillBonus, strengthBonus, staminaBonus):
 
@@ -12,6 +13,7 @@ def createCharacter(name, level, skillBonus, strengthBonus, staminaBonus):
 
     character = fighter()
     fight = combatLogs()
+    fight.logLevel = 0
 
     if(name == ''):
         character.name = str(input("Give your character a name: "))
@@ -22,16 +24,16 @@ def createCharacter(name, level, skillBonus, strengthBonus, staminaBonus):
     statToUseNext = random.randint(1,2)
     
     randOne = random.randint(0,statUpper)
-          
+
     restRand = statUpper - int(randOne)
-    
+
     randTwo = random.randint(restRand,statUpper)
     
-    statToAdd = statLower + int(randOne)
+    statToAdd = statLower + int(randOne) + level
 
     statToAddNext = statLower + int(randTwo)
 
-    statLeft = int(statUpper*3) - int(statToAdd) - int(statToAddNext)
+    statLeft = int(statUpper*4) - int(statToAdd) - int(statToAddNext)
     
     statTotal = statToAdd + statToAddNext + statLeft
     
@@ -65,7 +67,7 @@ def createCharacter(name, level, skillBonus, strengthBonus, staminaBonus):
             character.strength = statToAddNext + strengthBonus
             character.skill = statLeft + skillBonus
 
-    character.calculateSecondaryStats()
+    character.calculateStats()
 
     eventText = "Created " + character.name + " has < " + str(character.skill) + " ap | " + str(character.strength) + " str | " + str(character.stamina) + " sta | " + str(character.hitPoints) + " hp >"
     fight.logEvent(eventText,0)
@@ -96,12 +98,15 @@ def battle(playerOne,playerTwo):
 
     fight = combatLogs()
     fight.enabledScroll = False
+    fight.logLevel = 0
+
+    stats = combatStats()
     
     swing = 1
     
     while True:
        strengthModifier = calcModifier(playerOne.strength,playerTwo.strength,1)
-       skillModifier = calcModifier(playerOne.skill,playerTwo.skill,0.2)
+       skillModifier = calcModifier(playerOne.typeStat,playerTwo.typeStat,0.2)
 
        result = fightRound(int(playerOne.swing()),int(playerTwo.swing()))
        if result == 1:
@@ -133,59 +138,37 @@ def battle(playerOne,playerTwo):
            eventText = "After " + str(swing) + " swings, " + playerTwo.name + " won!"
            fight.logEvent(eventText + "\n",1)
            fight.logEvent("******************************************",1)
-           playerTwo.win()
-           playerOne.calculateSecondaryStats()
-           playerTwo.calculateSecondaryStats()
+           stats.registerWin(playerTwo)
+           playerOne.calculateStats()
+           playerTwo.calculateStats()
            break
        elif not playerTwo.isAlive():
            eventText = "After " + str(swing) + " swings, " + playerOne.name + " won!"
            fight.logEvent(eventText,1)
            fight.logEvent("******************************************",1)
-           playerOne.win()
-           playerOne.calculateSecondaryStats()
-           playerTwo.calculateSecondaryStats()
+           stats.registerWin(playerOne)
+           playerOne.calculateStats()
+           playerTwo.calculateStats()
            break
-       # You can slow the fight down by un-commenting the line below.
-       time.sleep(0.0)
        swing = swing+1
 
 def tournament(rounds):
     fight = combatLogs()
-    fight.logEvent("\n******************************************",0)
+    fight.logLevel = 0
 
-    playerOne = createCharacter('Ishino',12,10,10,10)
-    playerTwo = createCharacter('Akira',15,0,0,0)
-
-    #playerOne = fighter()
-    #playerOne.name = 'Ishino'
-    #playerOne.skill = 55
-    #playerOne.strength = 10
-    #playerOne.stamina = 30
-    #playerOne.calculateSecondaryStats()
-
-    #eventText = "Created " + playerOne.name + " has < " + str(playerOne.skill) + " ap | " + str(playerOne.strength) + " str | " + str(playerOne.stamina) + " sta | " + str(playerOne.hitPoints) + " hp >"
-    #fight.logEvent(eventText,0)
-
-    #playerTwo = fighter()
-    #playerTwo.name = 'Akira'
-    #playerTwo.skill = 10
-    #playerTwo.strength = 55
-    #playerTwo.stamina = 30
-    #playerTwo.calculateSecondaryStats()
-
-    #eventText = "Created " + playerTwo.name + " has < " + str(playerTwo.skill) + " ap | " + str(playerTwo.strength) + " str | " + str(playerTwo.stamina) + " sta | " + str(playerTwo.hitPoints) + " hp >"
-    #fight.logEvent(eventText,0)
-
-    # log the start stats
-
-    fight.logEvent("------------------------------------------",0)
-
-    time.sleep(1)
+    stats = combatStats()
 
     for i in range(int(rounds)):
+        fight.logEvent("\n******************************************",0)
+        playerOne = createCharacter('Ishino',15,0,0,0)
+        playerTwo = createCharacter('Akira',15,0,0,0)
+        fight.logEvent("------------------------------------------",0)
         battle(playerOne,playerTwo)
 
-    fight.logEvent(playerOne.name + ": " + str(playerOne.wins) + "\n",0)
-    fight.logEvent(playerTwo.name + ": " + str(playerTwo.wins) + "\n",0)
+    tournament = stats.getStats()
 
-tournament(100000)
+    for player in tournament:
+        for type in tournament[player]:
+            print(str(player) + " - Type " + str(type) + ": " + str(tournament[player][type]))
+
+tournament(10000)

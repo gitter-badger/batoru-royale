@@ -1,8 +1,11 @@
+import time
+
 class combatLogs:
 
     enabledScroll = True
     verboseEvent = False
     logLevel = 1
+    scrollSpeed = 0.4
 
     def scroll(self, winner, looser, damage, gain):
 
@@ -23,6 +26,7 @@ class combatLogs:
         print("After this round " + winner.name + " has < " + str(winner.fightSkill) + " ap | " + str(winner.hitPoints) + " hp >")
         print("After this round " + looser.name + " has < " + str(looser.fightSkill) + " ap | " + str(looser.hitPoints) + " hp >\n")
 
+        time.sleep(self.scrollSpeed)
 
     def logEvent(self,text,level):
 
