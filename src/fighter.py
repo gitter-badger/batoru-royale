@@ -1,6 +1,6 @@
 import math
 import random
-from stats import combatStats
+from combatStats import combatStats
 
 class fighter:
 
@@ -57,6 +57,67 @@ class fighter:
             self.strength = self.strength + 3
             self.stamina = self.stamina + 6
 
+        self.calculateStats()
+
+
+    def create(self, name, startLevel, skillBonus, strengthBonus, staminaBonus):
+        self.level = startLevel
+
+        statLower = 1 * self.level
+        statUpper = 3 * self.level
+    
+        if(name == ''):
+            self.name = str(input("Give your character a name: "))
+        else:
+            self.name = str(name)
+        
+        statToUse = random.randint(1,3)
+        statToUseNext = random.randint(1,2)
+        
+        randOne = random.randint(0,statUpper)
+    
+        restRand = statUpper - int(randOne)
+    
+        randTwo = random.randint(restRand,statUpper)
+        
+        statToAdd = statLower + int(randOne) + self.level
+    
+        statToAddNext = statLower + int(randTwo)
+    
+        statLeft = int(statUpper*4) - int(statToAdd) - int(statToAddNext)
+        
+        statTotal = statToAdd + statToAddNext + statLeft
+        
+        if statToUse == 1:
+            
+            self.skill = statToAdd + skillBonus
+            if statToUseNext == 1:
+                self.strength = statToAddNext + strengthBonus
+                self.stamina = statLeft + staminaBonus
+            else:
+                self.stamina = statToAddNext + staminaBonus
+                self.strength = statLeft + strengthBonus
+                    
+        elif statToUse == 2:
+    
+            self.strength = statToAdd + strengthBonus
+            if statToUseNext == 1:
+                self.skill = statToAddNext + skillBonus
+                self.stamina = statLeft + staminaBonus
+            else:
+                self.stamina = statToAddNext + staminaBonus
+                self.skill = statLeft + skillBonus
+    
+        else:
+            
+            self.stamina = statToAdd + staminaBonus
+            if statToUseNext == 1:
+                self.skill = statToAddNext + skillBonus
+                self.strength = statLeft + strengthBonus
+            else:
+                self.strength = statToAddNext + strengthBonus
+                self.skill = statLeft + skillBonus
+    
         self.calculateStats()
 
 
