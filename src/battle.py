@@ -29,7 +29,7 @@ def battle(playerOne,playerTwo):
 
     fight = combatLogs()
     fight.enabledScroll = False
-    fight.logLevel = 0
+    fight.logLevel = 1
 
     stats = combatStats()
     
@@ -86,7 +86,7 @@ def battle(playerOne,playerTwo):
 
 def tournament(rounds):
     fight = combatLogs()
-    fight.logLevel = 0
+    fight.logLevel = 1
 
     playerOne = fighter()
     playerTwo = fighter()
@@ -109,6 +109,7 @@ def tournament(rounds):
         playerTwo.create('Ogre',playerTwoLevel,0,0,0)
         eventText = "At level " + str(playerTwo.level) + " " + playerTwo.name + " has < " + str(playerTwo.skill) + " ap | " + str(playerTwo.strength) + " str | " + str(playerTwo.stamina) + " sta | " + str(playerTwo.hitPoints) + " hp >"
         fight.logEvent(eventText,0)
+        battle(playerOne,playerTwo)
 
     tournament = stats.getStats()
 
