@@ -67,26 +67,26 @@ def battle(playerOne,playerTwo):
 
        if not playerOne.isAlive():
            eventText = "After " + str(swing) + " swings, " + playerTwo.name + " won!"
-           fight.logEvent(eventText + "\n",1)
-           fight.logEvent("******************************************",1)
+           fight.logEvent(eventText + "\n",0)
+           fight.logEvent("******************************************",0)
            stats.registerWin(playerTwo)
            playerOne.calculateStats()
            playerTwo.calculateStats()
-           break
+           return 2
        elif not playerTwo.isAlive():
            eventText = "After " + str(swing) + " swings, " + playerOne.name + " won!"
-           fight.logEvent(eventText,1)
-           fight.logEvent("******************************************",1)
+           fight.logEvent(eventText,0)
+           fight.logEvent("******************************************",0)
            stats.registerWin(playerOne)
-           playerOne.levelUp()
+           playerOne.levelUp(playerTwo.level)
            playerOne.calculateStats()
            playerTwo.calculateStats()
-           break
+           return 1
        swing = swing+1
 
 def tournament(rounds):
     fight = combatLogs()
-    fight.logLevel = 1
+    fight.logLevel = 0
 
     playerOne = fighter()
     playerTwo = fighter()
@@ -97,13 +97,18 @@ def tournament(rounds):
 
     stats = combatStats()
 
-    for i in range(int(rounds)):
-        eventText = "At level " + str(playerOne.level) + " " + playerOne.name + " has < " + str(playerOne.skill) + " ap | " + str(playerOne.strength) + " str | " + str(playerOne.stamina) + " sta | " + str(playerOne.hitPoints) + " hp >"
+    # for i in range(int(rounds)):
+    while (playerOne.level < rounds):
+        eventText = "At level " + str(playerOne.level) + " " + playerOne.name + " has < " + str(playerOne.skill) + " ap | " + str(playerOne.strength) + " str | " + str(playerOne.stamina) + " sta | " + str(playerOne.hitPoints) + " hp | " + str(playerOne.experience) + " XP | needed: " + str(playerOne.calculateExperienceNeed()) + " >"
         fight.logEvent(eventText,0)
-        playerTwo.create('Ogre',playerOne.level,0,0,0)
+        lowerOpponentLevel = playerOne.level - 1
+        if lowerOpponentLevel < 1:
+            lowerOpponentLevel = 1
+        upperOpponentLevel = playerOne.level + 2
+        playerTwoLevel = random.randint(lowerOpponentLevel, upperOpponentLevel)
+        playerTwo.create('Ogre',playerTwoLevel,0,0,0)
         eventText = "At level " + str(playerTwo.level) + " " + playerTwo.name + " has < " + str(playerTwo.skill) + " ap | " + str(playerTwo.strength) + " str | " + str(playerTwo.stamina) + " sta | " + str(playerTwo.hitPoints) + " hp >"
         fight.logEvent(eventText,0)
-        battle(playerOne,playerTwo)
 
     tournament = stats.getStats()
 
@@ -111,4 +116,5 @@ def tournament(rounds):
         for type in tournament[player]:
             print(str(player) + " - Type " + str(type) + ": " + str(tournament[player][type]))
 
-tournament(1000)
+
+tournament(10)

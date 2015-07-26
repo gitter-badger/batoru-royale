@@ -27,37 +27,58 @@ class fighter:
 
     experience = 0
 
-    def levelUp(self):
-        self.level = self.level + 1
+    def calculateExperienceNeed(self):
 
-        if self.type == 'A':
-            self.strength = self.strength + 6
-            self.stamina = self.stamina + 6
+        calculateExperienceNeed = 0
 
-        if self.type == 'B':
-            self.stamina = self.stamina + 6
-            self.skill = self.skill + 6
+        for i in range(int(self.level)):
+            calculateExperienceNeed = calculateExperienceNeed + ((self.level + 1000) * (self.level * self.level))
 
-        if self.type == 'C':
-            self.skill = self.skill + 6
-            self.strength = self.strength + 6
+        return calculateExperienceNeed
 
-        if self.type == 'D':
-            self.skill = self.skill + 6
-            self.strength = self.strength + 3
-            self.stamina = self.stamina + 3
+    def levelUp(self, opponentLevel):
 
-        if self.type == 'E':
-            self.skill = self.skill + 3
-            self.strength = self.strength + 6
-            self.stamina = self.stamina + 3
+        experienceGain = (opponentLevel * opponentLevel) + (opponentLevel * opponentLevel) - (self.level * self.level)
 
-        if self.type == 'F':
-            self.skill = self.skill + 3
-            self.strength = self.strength + 3
-            self.stamina = self.stamina + 6
+        if experienceGain < 0:
+            experienceGain = 0
 
-        self.calculateStats()
+        self.experience = self.experience + experienceGain
+
+        calculatedExperience = self.calculateExperienceNeed()
+
+        if calculatedExperience < self.experience:
+
+            self.level = self.level + 1
+
+            if self.type == 'A':
+                self.strength = self.strength + 6
+                self.stamina = self.stamina + 6
+
+            if self.type == 'B':
+                self.stamina = self.stamina + 6
+                self.skill = self.skill + 6
+
+            if self.type == 'C':
+                self.skill = self.skill + 6
+                self.strength = self.strength + 6
+
+            if self.type == 'D':
+                self.skill = self.skill + 6
+                self.strength = self.strength + 3
+                self.stamina = self.stamina + 3
+
+            if self.type == 'E':
+                self.skill = self.skill + 3
+                self.strength = self.strength + 6
+                self.stamina = self.stamina + 3
+
+            if self.type == 'F':
+                self.skill = self.skill + 3
+                self.strength = self.strength + 3
+                self.stamina = self.stamina + 6
+
+            self.calculateStats()
 
 
     def create(self, name, startLevel, skillBonus, strengthBonus, staminaBonus):
