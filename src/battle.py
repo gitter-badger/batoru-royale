@@ -75,7 +75,7 @@ class Battle:
             modifier = 1
         return int(modifier)
 
-    def compete(self, player_one, player_two):
+    def compete(self, player_one: Fighter, player_two: Fighter):
 
         fight = CombatLogs()
         fight.enabledScroll = False
@@ -95,8 +95,8 @@ class Battle:
                 if damage < 1:
                     damage = 0
 
-                player_one.awardPlayer(skill_modifier)
-                player_two.punishPlayer(damage, skill_modifier)
+                player_one.award_player(skill_modifier)
+                player_two.punish_player(damage, skill_modifier)
 
                 fight.scroll(player_one, player_two, damage, skill_modifier)
 
@@ -106,8 +106,8 @@ class Battle:
                 if damage < 1:
                     damage = 0
 
-                player_two.awardPlayer(skill_modifier)
-                player_one.punishPlayer(damage, skill_modifier)
+                player_two.award_player(skill_modifier)
+                player_one.punish_player(damage, skill_modifier)
 
                 fight.scroll(player_two, player_one, damage, skill_modifier)
 
