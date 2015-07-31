@@ -1,9 +1,10 @@
 # import math and random number functions
 import random
-import math
+
 from fighter import Fighter
 from combatLogs import CombatLogs
 from combatStats import CombatStats
+from CombatCalculations import CombatCalculations
 
 
 class Battle:
@@ -11,7 +12,7 @@ class Battle:
     levelCap = 1
 
     def __init__(self):
-        self.levelCap = 10
+        self.levelCap = 3
         self.main()
 
     def main(self):
@@ -57,25 +58,7 @@ class Battle:
             self.compete(player_one, player_two)
 
     @staticmethod
-    def fight_round(player_one_punch, player_two_punch):
-
-        if not player_one_punch == player_two_punch:
-            if player_one_punch > player_two_punch:
-                return 1
-            else:
-                return 2
-        else:
-            return 0
-
-    @staticmethod
-    def calc_modifier(value_one, value_two, multiplier):
-        difference = int(value_one) - int(value_two)
-        modifier = math.floor(math.fabs(difference) * multiplier)
-        if modifier == 0:
-            modifier = 1
-        return int(modifier)
-
-    def compete(self, player_one: Fighter, player_two: Fighter):
+    def compete(player_one: Fighter, player_two: Fighter):
 
         fight = CombatLogs()
         fight.enabledScroll = False
@@ -86,9 +69,9 @@ class Battle:
         swing = 1
 
         while True:
-            skill_modifier = Battle.calc_modifier(player_one.typeStat, player_two.typeStat, 0.2)
+            skill_modifier = CombatCalculations.calc_modifier(player_one.typeStat, player_two.typeStat, 0.2)
 
-            result = self.fight_round(int(player_one.swing()), int(player_two.swing()))
+            result = CombatCalculations.get_highest(int(player_one.swing()), int(player_two.swing()))
             if result == 1:
 
                 damage = player_one.punch() - player_two.block()
@@ -133,4 +116,5 @@ class Battle:
                 return 1
             swing += 1
 
-battle = Battle()
+if __name__ == "__main__":
+    Battle()
