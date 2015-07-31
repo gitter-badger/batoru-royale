@@ -1,8 +1,8 @@
 import math
 import random
-from combatStats import combatStats
 
-class fighter:
+
+class Fighter:
 
     name = ''
     type = 'D'
@@ -27,160 +27,156 @@ class fighter:
 
     experience = 0
 
-    def calculateExperienceNeed(self):
+    def calculate_experience_need(self):
 
-        calculateExperienceNeed = 0
+        calculate_experience_need = 0
 
         for i in range(int(self.level)):
-            calculateExperienceNeed = calculateExperienceNeed + ((self.level + 1000) * (self.level * self.level))
+            calculate_experience_need += ((self.level + 1000) * (self.level * self.level))
 
-        return calculateExperienceNeed
+        return calculate_experience_need
 
-    def levelUp(self, opponentLevel):
+    def level_up(self, opponent_level):
 
-        experienceGain = (opponentLevel * opponentLevel) + (opponentLevel * opponentLevel) - (self.level * self.level)
+        experience_gain = opponent_level * opponent_level + opponent_level * opponent_level - self.level * self.level
 
-        if experienceGain < 0:
-            experienceGain = 0
+        if experience_gain < 0:
+            experience_gain = 0
 
-        self.experience = self.experience + experienceGain
+        self.experience += experience_gain
 
-        calculatedExperience = self.calculateExperienceNeed()
+        calculated_experience = self.calculate_experience_need()
 
-        if calculatedExperience < self.experience:
+        if calculated_experience < self.experience:
 
-            self.level = self.level + 1
+            self.level += 1
 
             if self.type == 'A':
-                self.strength = self.strength + 6
-                self.stamina = self.stamina + 6
+                self.strength += 6
+                self.stamina += 6
 
             if self.type == 'B':
-                self.stamina = self.stamina + 6
-                self.skill = self.skill + 6
+                self.stamina += 6
+                self.skill += 6
 
             if self.type == 'C':
-                self.skill = self.skill + 6
-                self.strength = self.strength + 6
+                self.skill += 6
+                self.strength += 6
 
             if self.type == 'D':
-                self.skill = self.skill + 6
-                self.strength = self.strength + 3
-                self.stamina = self.stamina + 3
+                self.skill += 6
+                self.strength += 3
+                self.stamina += 3
 
             if self.type == 'E':
-                self.skill = self.skill + 3
-                self.strength = self.strength + 6
-                self.stamina = self.stamina + 3
+                self.skill += 3
+                self.strength += 6
+                self.stamina += 3
 
             if self.type == 'F':
-                self.skill = self.skill + 3
-                self.strength = self.strength + 3
-                self.stamina = self.stamina + 6
+                self.skill += 3
+                self.strength += 3
+                self.stamina += 6
 
-            self.calculateStats()
+            self.calculate_stats()
 
+    def create(self, name, start_level, skill_bonus, strength_bonus, stamina_bonus):
+        self.level = start_level
 
-    def create(self, name, startLevel, skillBonus, strengthBonus, staminaBonus):
-        self.level = startLevel
+        stat_lower = 1 * self.level
+        stat_upper = 3 * self.level
 
-        statLower = 1 * self.level
-        statUpper = 3 * self.level
-    
-        if(name == ''):
+        if name == '':
             self.name = str(input("Give your character a name: "))
         else:
             self.name = str(name)
-        
-        statToUse = random.randint(1,3)
-        statToUseNext = random.randint(1,2)
-        
-        randOne = random.randint(0,statUpper)
-    
-        restRand = statUpper - int(randOne)
-    
-        randTwo = random.randint(restRand,statUpper)
-        
-        statToAdd = statLower + int(randOne) + self.level
-    
-        statToAddNext = statLower + int(randTwo)
-    
-        statLeft = int(statUpper*4) - int(statToAdd) - int(statToAddNext)
-        
-        statTotal = statToAdd + statToAddNext + statLeft
-        
-        if statToUse == 1:
-            
-            self.skill = statToAdd + skillBonus
-            if statToUseNext == 1:
-                self.strength = statToAddNext + strengthBonus
-                self.stamina = statLeft + staminaBonus
+
+        stat_to_use = random.randint(1, 3)
+        stat_to_use_next = random.randint(1, 2)
+
+        rand_one = random.randint(0, stat_upper)
+
+        rest_rand = stat_upper - int(rand_one)
+
+        rand_two = random.randint(rest_rand, stat_upper)
+
+        stat_to_add = stat_lower + int(rand_one) + self.level
+
+        stat_to_add_next = stat_lower + int(rand_two)
+
+        stat_left = int(stat_upper * 4) - int(stat_to_add) - int(stat_to_add_next)
+
+        if stat_to_use == 1:
+
+            self.skill = stat_to_add + skill_bonus
+            if stat_to_use_next == 1:
+                self.strength = stat_to_add_next + strength_bonus
+                self.stamina = stat_left + stamina_bonus
             else:
-                self.stamina = statToAddNext + staminaBonus
-                self.strength = statLeft + strengthBonus
-                    
-        elif statToUse == 2:
-    
-            self.strength = statToAdd + strengthBonus
-            if statToUseNext == 1:
-                self.skill = statToAddNext + skillBonus
-                self.stamina = statLeft + staminaBonus
+                self.stamina = stat_to_add_next + stamina_bonus
+                self.strength = stat_left + strength_bonus
+
+        elif stat_to_use == 2:
+
+            self.strength = stat_to_add + strength_bonus
+            if stat_to_use_next == 1:
+                self.skill = stat_to_add_next + skill_bonus
+                self.stamina = stat_left + stamina_bonus
             else:
-                self.stamina = statToAddNext + staminaBonus
-                self.skill = statLeft + skillBonus
-    
+                self.stamina = stat_to_add_next + stamina_bonus
+                self.skill = stat_left + skill_bonus
+
         else:
-            
-            self.stamina = statToAdd + staminaBonus
-            if statToUseNext == 1:
-                self.skill = statToAddNext + skillBonus
-                self.strength = statLeft + strengthBonus
+
+            self.stamina = stat_to_add + stamina_bonus
+            if stat_to_use_next == 1:
+                self.skill = stat_to_add_next + skill_bonus
+                self.strength = stat_left + strength_bonus
             else:
-                self.strength = statToAddNext + strengthBonus
-                self.skill = statLeft + skillBonus
-    
-        self.calculateStats()
+                self.strength = stat_to_add_next + strength_bonus
+                self.skill = stat_left + skill_bonus
 
+        self.calculate_stats()
 
-    def calculateStats(self):
+    def calculate_stats(self):
         self.hitPoints = self.hitPointsBase * self.stamina
         self.fightSkill = self.skill
 
-        primaryStat = self.skill
-        secondaryStat = (self.strength + self.stamina)
-        primaryType = 'A'
-        secondaryType = 'D'
+        primary_stat = self.skill
+        secondary_stat = (self.strength + self.stamina)
+        primary_type = 'A'
+        secondary_type = 'D'
 
-        if self.strength > primaryStat:
-            primaryStat = self.strength
-            secondaryStat = (self.skill + self.stamina)
-            primaryType = 'B'
-            secondaryType = 'E'
+        if self.strength > primary_stat:
+            primary_stat = self.strength
+            secondary_stat = (self.skill + self.stamina)
+            primary_type = 'B'
+            secondary_type = 'E'
 
-        if self.stamina > primaryStat:
-            primaryStat = self.stamina
-            secondaryStat = (self.strength + self.skill)
-            primaryType = 'C'
-            secondaryType = 'F'
+        if self.stamina > primary_stat:
+            primary_stat = self.stamina
+            secondary_stat = (self.strength + self.skill)
+            primary_type = 'C'
+            secondary_type = 'F'
 
-        self.type = primaryType
-        self.typeStat = primaryStat
-        self.fightSkill = primaryStat
+        self.type = primary_type
+        self.typeStat = primary_stat
+        self.fightSkill = primary_stat
 
-        if secondaryStat > primaryStat:
-            self.typeStat = secondaryStat
-            self.type = secondaryType
+        if secondary_stat > primary_stat:
+            self.typeStat = secondary_stat
+            self.type = secondary_type
 
-    def awardPlayer(self,skillModifier):
-        self.fightSkill = int(self.fightSkill) + int(skillModifier)
+    def award_player(self, skill_modifier):
+        self.fightSkill = int(self.fightSkill) + int(skill_modifier)
 
-    def punishPlayer(self,damage,skillModifier):
+    def punish_player(self, damage, skill_modifier):
         self.hitPoints = int(self.hitPoints) - int(damage)
-        self.fightSkill = int(self.fightSkill) - int(skillModifier)
+        self.fightSkill = int(self.fightSkill) - int(skill_modifier)
         if int(self.fightSkill) < 0:
             self.fightSkill = 0
 
-    def isAlive(self):
+    def is_alive(self):
         if int(self.hitPoints) > 0:
             return True
         else:
@@ -188,17 +184,17 @@ class fighter:
 
     def swing(self):
         chance = math.floor(self.typeStat + self.fightSkill)
-        accuracy = random.randint(0,chance) * self.chanceMultiplier
+        accuracy = random.randint(0, chance) * self.chanceMultiplier
         return accuracy
 
     def punch(self):
-        offenceModifier = (self.strength * self.strengthMultiplier)/self.offenceReduction
-        offence = math.floor(math.fabs(self.fightSkill * offenceModifier))
+        offence_modifier = (self.strength * self.strengthMultiplier)/self.offenceReduction
+        offence = math.floor(math.fabs(self.fightSkill * offence_modifier))
         if offence < 1:
             offence = 1
         return offence
 
     def block(self):
-        defenceModifier = (self.stamina * self.staminaMultiplier)/self.defenceReduction
-        defence = math.floor(math.fabs(self.fightSkill * defenceModifier))
+        defence_modifier = (self.stamina * self.staminaMultiplier)/self.defenceReduction
+        defence = math.floor(math.fabs(self.fightSkill * defence_modifier))
         return defence

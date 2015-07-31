@@ -1,17 +1,17 @@
-class combatStats:
+class CombatStats:
     wins = {}
 
-    def registerWin(self,player):
+    def register_win(self, player):
         if player.name not in self.wins:
             self.wins[player.name] = {}
 
-        playerWins = self.wins[player.name]
+        player_wins = self.wins[player.name]
 
-        if player.type not in playerWins:
-            playerWins[player.type] = 0
-            self.wins[player.name] = playerWins
+        if player.type not in player_wins:
+            player_wins[player.type] = 0
+            self.wins[player.name] = player_wins
 
-        self.wins[player.name][player.type] = self.wins[player.name][player.type] + 1
+        self.wins[player.name][player.type] += 1
 
-    def getStats(self):
+    def get_stats(self):
         return self.wins

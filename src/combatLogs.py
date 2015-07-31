@@ -1,6 +1,7 @@
 import time
 
-class combatLogs:
+
+class CombatLogs:
 
     enabledScroll = True
     verboseEvent = False
@@ -9,7 +10,7 @@ class combatLogs:
 
     def scroll(self, winner, looser, damage, gain):
 
-        if self.enabledScroll == False:
+        if not self.enabledScroll:
             return
 
         if gain > 0:
@@ -18,22 +19,23 @@ class combatLogs:
             else:
                 print(winner.name + " checked " + looser.name + " for weaknesses!")
 
-
             print(winner.name + " gained " + str(gain) + " attack points!")
         else:
             print("Both fighters miss their swings! Pathetic!")
 
-        print("After this round " + winner.name + " has < " + str(winner.fightSkill) + " ap | " + str(winner.hitPoints) + " hp >")
-        print("After this round " + looser.name + " has < " + str(looser.fightSkill) + " ap | " + str(looser.hitPoints) + " hp >\n")
+        print("After this round " + winner.name + " has < " + str(winner.fightSkill) + " ap | "
+              + str(winner.hitPoints) + " hp >")
+        print("After this round " + looser.name + " has < " + str(looser.fightSkill) + " ap | "
+              + str(looser.hitPoints) + " hp >\n")
 
         time.sleep(self.scrollSpeed)
 
-    def logEvent(self,text,level):
+    def log_event(self, text, level):
 
         if level < self.logLevel:
             with open("battle_log.txt", "a") as charFile:
                 charFile.write(text + "\n")
-            if self.verboseEvent == True:
+            if self.verboseEvent:
                 print(text + "\n")
 
         return
