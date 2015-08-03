@@ -1,6 +1,8 @@
 batoru-royale
 =============
 
+[![Build Status](https://travis-ci.org/Ishino/batoru-royale.svg?branch=master)](https://travis-ci.org/Ishino/batoru-royale)
+
 Learning Python the fun way.
 
 ## prerequisites ##
