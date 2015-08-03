@@ -9,4 +9,4 @@ branches:
     - master
 
 # command to run tests
-script: nosetest combat/
+script: nosetests combat/
