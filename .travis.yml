@@ -9,4 +9,4 @@ branches:
     - master
 
 # command to run tests
-script: nosetests batoru/combat/
+script: nosetests
