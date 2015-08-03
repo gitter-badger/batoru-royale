@@ -1,5 +1,12 @@
 language: python
 python:
+  - "3.3"
   - "3.4"
+
+# whitelist
+branches:
+  only:
+    - master
+
 # command to run tests
-script: python batoru/test.py
+script: nosetest combat/

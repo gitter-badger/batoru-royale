@@ -1,5 +1,5 @@
 import unittest
-from combat.combat_calculations import CombatCalculations
+from combat_calculations import CombatCalculations
 
 
 class TestCombatCalculations(unittest.TestCase):
