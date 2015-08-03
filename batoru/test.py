@@ -1,3 +1,5 @@
-from tests import TestCombatCalculations
+import unittest
+from tests.combat_calculations_tests import TestCombatCalculations
 
-TestCombatCalculations()
+if __name__ == '__main__':
+    unittest.main()

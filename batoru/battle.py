@@ -2,9 +2,9 @@
 import random
 
 from fighter import Fighter
-from combatLogs import CombatLogs
-from combatStats import CombatStats
-from CombatCalculations import CombatCalculations
+from combat.combat_logs import CombatLogs
+from combat.combat_stats import CombatStats
+from combat.combat_calculations import CombatCalculations
 
 
 class Battle:
