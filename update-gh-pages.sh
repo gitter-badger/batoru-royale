@@ -16,6 +16,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
   # Go into the directory and copy data we're interested in to that directory
   cd gh-pages
+  mkdir cover
   cp -Rf $HOME/cover/* ./cover
 
   # add, commit and push files
