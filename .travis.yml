@@ -1,13 +1,16 @@
 language: python
 python:
-  - "3.3"
-  - "3.4"
-
-# whitelist
+- '3.3'
+- '3.4'
 branches:
   only:
-    - master
+  - master
 install:
-  - pip install coverage
+- pip install coverage
 script:
-  - nosetests -v --with-coverage
+- nosetests -v --with-coverage
+after_success:
+- ./update-gh-pages.sh
+env:
+  global:
+    secure: l0qrJvQyvOzbqaoLP4djxmW1bV3G2lqJy/1gdFKRhegnclLpEK5j0qHRhZ3rRqvZ9BHh4lgPdap/vUP1dlgPCbB9hjapknT4cjnp1q/Wj5IRYi16gmpRuLPKT2kZedEyzIRqcpYk/b/NVnKCvQAWBxNkNHb+K30USpEMQVitSdkPAnNNL66oOa9c+9vmjn8Ijowf5ZO9rfhuoYKw1Fbuj1MqLIVGTbF5gCjf8Fii/W1kZOwHo6p1CpnlMV4ph7VQB5rNlupH6AdzEtkZcd+ioHdJgwx5Jk0VEXHKm1gtAO/823w+Bf3XD5uNnLbl15IKosyriyvsSi8LrNBR82MM627I8ffg0dNsBrp3vVHp/VhNURYdEM1sF0CGjmG0WKryhdfETSDjVZoKMJ8UVhIOuCio6HQG5nCepqBTzAc7sfsiyeEAA7ewuf1iOkB3HK64BGmyFGPJzKrnzeSDvsrp5x4RiyYgEnVPzd8BpGPmNFfFcUoK3YPgqoeDo1PTPAj41OrGMoNWyzK4UnouaJcX0fz1/VRZGK4571bHcRGxSRAPiAU20JMFQ6l0GRFLhscVecRavpASjI4726YuqNTszZuWy1ytxZbBqZOO7F6+smuSmGYH9MkQP4q+2qFNP0JIMU15mp6p0u+Y6wn0tIliVrwo/egKp49pyERycR5o9GU=
