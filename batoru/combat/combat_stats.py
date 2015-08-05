@@ -1,5 +1,8 @@
 class CombatStats:
-    wins = {}
+
+    def __init__(self):
+        self.wins = {}
+
 
     def register_win(self, player):
         if player.name not in self.wins:

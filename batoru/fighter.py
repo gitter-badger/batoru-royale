@@ -27,6 +27,17 @@ class Fighter:
 
     experience = 0
 
+    def level_up(self, opponent_level):
+
+        self.experience += self.calculate_experience_gain(opponent_level)
+
+        calculated_experience = self.calculate_experience_need()
+
+        if calculated_experience < self.experience:
+
+            self.level += 1
+            self.level_up_stats()
+
     def calculate_experience_need(self):
 
         calculate_experience_need = 0
@@ -36,49 +47,43 @@ class Fighter:
 
         return calculate_experience_need
 
-    def level_up(self, opponent_level):
-
+    def calculate_experience_gain(self, opponent_level):
         experience_gain = opponent_level * opponent_level + opponent_level * opponent_level - self.level * self.level
 
         if experience_gain < 0:
             experience_gain = 0
 
-        self.experience += experience_gain
+        return experience_gain
 
-        calculated_experience = self.calculate_experience_need()
+    def level_up_stats(self):
+        if self.type == 'A':
+            self.strength += 6
+            self.stamina += 6
 
-        if calculated_experience < self.experience:
+        if self.type == 'B':
+            self.stamina += 6
+            self.skill += 6
 
-            self.level += 1
+        if self.type == 'C':
+            self.skill += 6
+            self.strength += 6
 
-            if self.type == 'A':
-                self.strength += 6
-                self.stamina += 6
+        if self.type == 'D':
+            self.skill += 6
+            self.strength += 3
+            self.stamina += 3
 
-            if self.type == 'B':
-                self.stamina += 6
-                self.skill += 6
+        if self.type == 'E':
+            self.skill += 3
+            self.strength += 6
+            self.stamina += 3
 
-            if self.type == 'C':
-                self.skill += 6
-                self.strength += 6
+        if self.type == 'F':
+            self.skill += 3
+            self.strength += 3
+            self.stamina += 6
 
-            if self.type == 'D':
-                self.skill += 6
-                self.strength += 3
-                self.stamina += 3
-
-            if self.type == 'E':
-                self.skill += 3
-                self.strength += 6
-                self.stamina += 3
-
-            if self.type == 'F':
-                self.skill += 3
-                self.strength += 3
-                self.stamina += 6
-
-            self.calculate_stats()
+        self.calculate_stats()
 
     def create(self, name, start_level, skill_bonus, strength_bonus, stamina_bonus):
         self.level = start_level
@@ -190,8 +195,6 @@ class Fighter:
     def punch(self):
         offence_modifier = (self.strength * self.strengthMultiplier)/self.offenceReduction
         offence = math.floor(math.fabs(self.fightSkill * offence_modifier))
-        if offence < 1:
-            offence = 1
         return offence
 
     def block(self):

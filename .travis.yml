@@ -10,4 +10,4 @@ branches:
 install:
   - pip install coverage
 script:
-  - nosetests -v --with-coverage --cover-tests
+  - nosetests -v --with-coverage

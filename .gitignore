@@ -2,4 +2,4 @@
 *battle_log*
 .idea
 *__pycache__*
-*.coverage
+*cover*
