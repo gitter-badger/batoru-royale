@@ -3,18 +3,18 @@
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update gh-pages\n"
 
-  # copy data we're interested in to other place
+  # Copy data we're interested in to other place
   cp -R cover $HOME/cover
 
-  # go to home and setup git
+  # Go to the home directory and clone GH pages from git
   cd $HOME
   git config --global user.email "travis@travis-ci.org"
   git config --global user.name "Travis"
 
-  # using token clone gh-pages branch
+  # Use the token to clone the gh-pages branch
   git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/Ishino/batoru-royale.git gh-pages > /dev/null
 
-  # go into directory and copy data we're interested in to that directory
+  # Go into the directory and copy data we're interested in to that directory
   cd gh-pages
   cp -Rf $HOME/cover/* ./cover
 
