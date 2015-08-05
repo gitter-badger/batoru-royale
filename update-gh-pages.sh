@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Based on http://sleepycoders.blogspot.cz/2013/03/sharing-travis-ci-generated-files.html
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
