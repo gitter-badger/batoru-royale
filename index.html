@@ -1,126 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <title>Coverage report</title>
-    <link rel='stylesheet' href='style.css' type='text/css'>
-    
-    <script type='text/javascript' src='jquery.min.js'></script>
-    <script type='text/javascript' src='jquery.tablesorter.min.js'></script>
-    <script type='text/javascript' src='jquery.hotkeys.js'></script>
-    <script type='text/javascript' src='coverage_html.js'></script>
-    <script type='text/javascript' charset='utf-8'>
-        jQuery(document).ready(coverage.index_ready);
-    </script>
-</head>
-<body id='indexfile'>
 
-<div id='header'>
-    <div class='content'>
-        <h1>Coverage report:
-            <span class='pc_cov'>51%</span>
-        </h1>
-        <img id='keyboard_icon' src='keybd_closed.png'>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Batoru-royale : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Batoru-royale</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Ishino/batoru-royale">View on GitHub</a>
+
+          <h1 id="project_title">Batoru-royale</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Ishino/batoru-royale/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Ishino/batoru-royale/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
     </div>
-</div>
 
-<div class='help_panel'>
-    <img id='panel_icon' src='keybd_open.png'>
-    <p class='legend'>Hot-keys on this page</p>
-    <div>
-    <p class='keyhelp'>
-        <span class='key'>n</span>
-        <span class='key'>s</span>
-        <span class='key'>m</span>
-        <span class='key'>x</span>
-        
-        <span class='key'>c</span> &nbsp; change column sorting
-    </p>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="batoru-royale" class="anchor" href="#batoru-royale" aria-hidden="true"><span class="octicon octicon-link"></span></a>batoru-royale</h1>
+
+<p><a href="https://travis-ci.org/Ishino/batoru-royale"><img src="https://travis-ci.org/Ishino/batoru-royale.svg?branch=master" alt="Build Status"></a></p>
+<p><a href="cover/index.html">Code Coverage</a></p>
+
+<p>Learning Python the fun way.</p>
+
+<h2>
+<a id="prerequisites" class="anchor" href="#prerequisites" aria-hidden="true"><span class="octicon octicon-link"></span></a>prerequisites</h2>
+
+<ul>
+<li>Python 3.x</li>
+</ul>
+
+<h2>
+<a id="notes" class="anchor" href="#notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes</h2>
+
+<p>Use Evolus Pencil to read the diagrams.</p>
+
+<p><a href="http://pencil.evolus.vn/">http://pencil.evolus.vn/</a></p>
+      </section>
     </div>
-</div>
 
-<div id='index'>
-    <table class='index'>
-        <thead>
-            
-            <tr class='tablehead' title='Click to sort'>
-                <th class='name left headerSortDown shortkey_n'>Module</th>
-                <th class='shortkey_s'>statements</th>
-                <th class='shortkey_m'>missing</th>
-                <th class='shortkey_x'>excluded</th>
-                
-                <th class='right shortkey_c'>coverage</th>
-            </tr>
-        </thead>
-        
-        <tfoot>
-            <tr class='total'>
-                <td class='name left'>Total</td>
-                <td>167</td>
-                <td>81</td>
-                <td>0</td>
-                
-                <td class='right'>51%</td>
-            </tr>
-        </tfoot>
-        <tbody>
-            
-            <tr class='file'>
-                <td class='name left'><a href='batoru.html'>batoru</a></td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                
-                <td class='right'>100%</td>
-            </tr>
-            
-            <tr class='file'>
-                <td class='name left'><a href='batoru_combat.html'>batoru.combat</a></td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                
-                <td class='right'>100%</td>
-            </tr>
-            
-            <tr class='file'>
-                <td class='name left'><a href='batoru_combat_combat_calculations.html'>batoru.combat.combat_calculations</a></td>
-                <td>14</td>
-                <td>0</td>
-                <td>0</td>
-                
-                <td class='right'>100%</td>
-            </tr>
-            
-            <tr class='file'>
-                <td class='name left'><a href='batoru_combat_combat_stats.html'>batoru.combat.combat_stats</a></td>
-                <td>13</td>
-                <td>0</td>
-                <td>0</td>
-                
-                <td class='right'>100%</td>
-            </tr>
-            
-            <tr class='file'>
-                <td class='name left'><a href='batoru_fighter.html'>batoru.fighter</a></td>
-                <td>140</td>
-                <td>81</td>
-                <td>0</td>
-                
-                <td class='right'>42%</td>
-            </tr>
-            
-        </tbody>
-    </table>
-</div>
-
-<div id='footer'>
-    <div class='content'>
-        <p>
-            <a class='nav' href='http://nedbatchelder.com/code/coverage'>coverage.py v3.7.1</a>
-        </p>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Batoru-royale maintained by <a href="https://github.com/Ishino">Ishino</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
     </div>
-</div>
 
-</body>
+
+
+  </body>
 </html>
