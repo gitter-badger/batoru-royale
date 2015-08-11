@@ -37,6 +37,11 @@ class TestCombatCalculations(unittest.TestCase):
         self.assertEqual(self.player.calculate_experience_gain(3), 2)
         self.assertEqual(self.player.calculate_experience_gain(4), 16)
 
+        self.player.level = 5
+        self.assertEqual(self.player.calculate_experience_gain(3), 0)
+        self.assertEqual(self.player.calculate_experience_gain(4), 7)
+        self.assertEqual(self.player.calculate_experience_gain(5), 25)
+
     def test_award_player(self):
         self.player.fightSkill = 1
         self.player.award_player(1)
