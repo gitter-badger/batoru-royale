@@ -3,10 +3,11 @@ import time
 
 class CombatLogs:
 
-    enabledScroll = True
-    verboseEvent = False
-    logLevel = 1
-    scrollSpeed = 0.4
+    def __init__(self):
+        self.enabledScroll = True
+        self.verboseEvent = False
+        self.logLevel = 1
+        self.scrollSpeed = 0.4
 
     def scroll(self, winner, looser, damage, gain):
 

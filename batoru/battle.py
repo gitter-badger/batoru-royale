@@ -37,7 +37,6 @@ class Battle:
         player_one.create('Ishino', 1, 0, 0, 0)
         fight.log_event("------------------------------------------", 0)
 
-        # for i in range(int(rounds)):
         while player_one.level < rounds:
             event_text = "At level " + str(player_one.level) + " " + player_one.name + " has < "\
                          + str(player_one.skill) + " ap | " + str(player_one.strength) + " str | "\
@@ -110,7 +109,7 @@ class Battle:
                              + "\n******************************************"
                 fight.log_event(event_text, 0)
                 stats.register_win(player_one)
-                player_one.level_up(player_two.level)
+                player_one.gain_experience(player_two.level)
                 player_one.calculate_stats()
                 player_two.calculate_stats()
                 return 1

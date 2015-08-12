@@ -4,39 +4,41 @@ import random
 
 class Fighter:
 
-    name = ''
-    type = 'D'
-    typeStat = 1
-    level = 1
+    def __init__(self):
+        self.name = ''
+        self.type = 'D'
+        self.typeStat = 1
+        self.level = 1
 
-    skill = 1
-    fightSkill = 1
-    strength = 1
-    stamina = 1
+        self.skill = 1
+        self.fightSkill = 1
+        self.strength = 1
+        self.stamina = 1
 
-    hitPointsBase = 100
+        self.hitPointsBase = 100
 
-    hitPoints = 0
+        self.hitPoints = 0
 
-    strengthMultiplier = 10
-    staminaMultiplier = 100
-    chanceMultiplier = 1
+        self.strengthMultiplier = 10
+        self.staminaMultiplier = 100
+        self.chanceMultiplier = 1
 
-    offenceReduction = 100
-    defenceReduction = 100
+        self.offenceReduction = 100
+        self.defenceReduction = 100
 
-    experience = 0
+        self.experience = 0
 
-    def level_up(self, opponent_level):
+    def gain_experience(self, opponent_level):
 
         self.experience += self.calculate_experience_gain(opponent_level)
-
-        calculated_experience = self.calculate_experience_need()
-
-        if calculated_experience < self.experience:
-
-            self.level += 1
+        if self.level_up(self.calculate_experience_need()):
             self.level_up_stats()
+
+    def level_up(self, calculated_experience):
+        if calculated_experience <= self.experience:
+            self.level += 1
+            return True
+        return False
 
     def calculate_experience_need(self):
 
