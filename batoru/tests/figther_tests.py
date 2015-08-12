@@ -1,46 +1,12 @@
 import unittest
-from batoru.fighter import Fighter
+from batoru.ningyo.fighter import Fighter
 
 
-class TestCombatCalculations(unittest.TestCase):
+class TestFighter(unittest.TestCase):
 
     def setUp(self):
         self.player = Fighter()
         self.player.name = 'name'
-
-    def test_calculate_experience_need(self):
-        result = 1001
-        self.assertEqual(self.player.calculate_experience_need(), result)
-
-        self.player.level = 2
-        result = 8016
-        self.assertEqual(self.player.calculate_experience_need(), result)
-
-    def test_calculate_experience_gain(self):
-        self.player.level = 1
-        self.assertEqual(self.player.calculate_experience_gain(1), 1)
-        self.assertEqual(self.player.calculate_experience_gain(2), 7)
-        self.assertEqual(self.player.calculate_experience_gain(3), 17)
-
-        self.player.level = 2
-        self.assertEqual(self.player.calculate_experience_gain(1), 0)
-        self.assertEqual(self.player.calculate_experience_gain(2), 4)
-        self.assertEqual(self.player.calculate_experience_gain(3), 14)
-
-        self.player.level = 3
-        self.assertEqual(self.player.calculate_experience_gain(1), 0)
-        self.assertEqual(self.player.calculate_experience_gain(2), 0)
-        self.assertEqual(self.player.calculate_experience_gain(3), 9)
-
-        self.player.level = 4
-        self.assertEqual(self.player.calculate_experience_gain(2), 0)
-        self.assertEqual(self.player.calculate_experience_gain(3), 2)
-        self.assertEqual(self.player.calculate_experience_gain(4), 16)
-
-        self.player.level = 5
-        self.assertEqual(self.player.calculate_experience_gain(3), 0)
-        self.assertEqual(self.player.calculate_experience_gain(4), 7)
-        self.assertEqual(self.player.calculate_experience_gain(5), 25)
 
     def test_award_player(self):
         self.player.fightSkill = 1

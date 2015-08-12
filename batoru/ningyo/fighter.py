@@ -1,5 +1,6 @@
 import math
 import random
+from batoru.ningyo.experience import Experience
 
 
 class Fighter:
@@ -28,10 +29,12 @@ class Fighter:
 
         self.experience = 0
 
+        self.experienceCalc = Experience()
+
     def gain_experience(self, opponent_level):
 
-        self.experience += self.calculate_experience_gain(opponent_level)
-        if self.level_up(self.calculate_experience_need()):
+        self.experience += self.experienceCalc.calculate_experience_gain(self.level, opponent_level)
+        if self.level_up(self.experienceCalc.calculate_experience_need(self.level)):
             self.level_up_stats()
 
     def level_up(self, calculated_experience):
@@ -39,23 +42,6 @@ class Fighter:
             self.level += 1
             return True
         return False
-
-    def calculate_experience_need(self):
-
-        calculate_experience_need = 0
-
-        for i in range(int(self.level)):
-            calculate_experience_need += ((self.level + 1000) * (self.level * self.level))
-
-        return calculate_experience_need
-
-    def calculate_experience_gain(self, opponent_level):
-        experience_gain = opponent_level * opponent_level + opponent_level * opponent_level - self.level * self.level
-
-        if experience_gain < 0:
-            experience_gain = 0
-
-        return experience_gain
 
     def level_up_stats(self):
         if self.type == 'A':

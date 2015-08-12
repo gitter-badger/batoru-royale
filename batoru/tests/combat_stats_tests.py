@@ -1,9 +1,9 @@
 import unittest
 from batoru.combat.combat_stats import CombatStats
-from batoru.fighter import Fighter
+from batoru.ningyo.fighter import Fighter
 
 
-class TestCombatCalculations(unittest.TestCase):
+class TestCombatStats(unittest.TestCase):
 
     def setUp(self):
         self.player = Fighter()

@@ -1,7 +1,7 @@
 # import math and random number functions
 import random
 
-from fighter import Fighter
+from ningyo.fighter import Fighter
 from combat.combat_logs import CombatLogs
 from combat.combat_stats import CombatStats
 from combat.combat_calculations import CombatCalculations
@@ -42,7 +42,7 @@ class Battle:
                          + str(player_one.skill) + " ap | " + str(player_one.strength) + " str | "\
                          + str(player_one.stamina) + " sta | " + str(player_one.hitPoints) + " hp | "\
                          + str(player_one.experience) + " XP | needed: "\
-                         + str(player_one.calculate_experience_need()) + " >"
+                         + str(player_one.experienceCalc.calculate_experience_need(player_one.level)) + " >"
             fight.log_event(event_text, 0)
             lower_opponent_level = player_one.level - 1
             if lower_opponent_level < 1:
