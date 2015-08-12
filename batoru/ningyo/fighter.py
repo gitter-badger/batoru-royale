@@ -1,6 +1,5 @@
 import math
 import random
-from batoru.ningyo.experience import Experience
 
 
 class Fighter:
@@ -29,7 +28,8 @@ class Fighter:
 
         self.experience = 0
 
-        self.experienceCalc = Experience()
+    def set_experience_calculator(self, experienceCalc):
+        self.experienceCalc = experienceCalc
 
     def gain_experience(self, opponent_level):
 

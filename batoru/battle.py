@@ -1,15 +1,14 @@
-# import math and random number functions
+# import random number functions
 import random
 
 from ningyo.fighter import Fighter
+from ningyo.experience import Experience
 from combat.combat_logs import CombatLogs
 from combat.combat_stats import CombatStats
 from combat.combat_calculations import CombatCalculations
 
 
 class Battle:
-
-    levelCap = 1
 
     def __init__(self):
         self.levelCap = 3
@@ -31,6 +30,7 @@ class Battle:
         fight.logLevel = 1
 
         player_one = Fighter()
+        player_one.set_experience_calculator(Experience())
         player_two = Fighter()
 
         fight.log_event("\n******************************************", 0)
