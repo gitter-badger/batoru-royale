@@ -2,6 +2,7 @@
 import random
 
 from ningyo.fighter import Fighter
+from ningyo.attributes import Attributes
 from ningyo.experience import Experience
 from combat.combat_logs import CombatLogs
 from combat.combat_stats import CombatStats
@@ -11,6 +12,7 @@ from combat.combat_calculations import CombatCalculations
 class Battle:
 
     def __init__(self):
+        self.attributes = Attributes()
         self.levelCap = 3
         self.main()
 
@@ -29,9 +31,9 @@ class Battle:
         fight = CombatLogs()
         fight.logLevel = 1
 
-        player_one = Fighter()
+        player_one = Fighter(self.attributes)
         player_one.set_experience_calculator(Experience())
-        player_two = Fighter()
+        player_two = Fighter(self.attributes)
 
         fight.log_event("\n******************************************", 0)
         player_one.create('Ishino', 1, 0, 0, 0)
@@ -42,7 +44,9 @@ class Battle:
                          + str(player_one.skill) + " ap | " + str(player_one.strength) + " str | "\
                          + str(player_one.stamina) + " sta | " + str(player_one.hitPoints) + " hp | "\
                          + str(player_one.experience) + " XP | needed: "\
-                         + str(player_one.experienceCalc.calculate_experience_need(player_one.level)) + " >"
+                         + str(player_one.experienceCalc.calculate_experience_need(player_one.level,
+                                                                                   player_one.experience_modifier
+                                                                                   )) + " >"
             fight.log_event(event_text, 0)
             lower_opponent_level = player_one.level - 1
             if lower_opponent_level < 1:

@@ -1,12 +1,14 @@
 import unittest
 from batoru.combat.combat_stats import CombatStats
 from batoru.ningyo.fighter import Fighter
+from batoru.ningyo.attributes import Attributes
 
 
 class TestCombatStats(unittest.TestCase):
 
     def setUp(self):
-        self.player = Fighter()
+        attributes = Attributes()
+        self.player = Fighter(attributes)
         self.player.name = 'name'
 
     def test_register_win(self):

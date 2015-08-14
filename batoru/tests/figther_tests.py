@@ -1,11 +1,13 @@
 import unittest
 from batoru.ningyo.fighter import Fighter
+from batoru.ningyo.attributes import Attributes
 
 
 class TestFighter(unittest.TestCase):
 
     def setUp(self):
-        self.player = Fighter()
+        attributes = Attributes()
+        self.player = Fighter(attributes)
         self.player.name = 'name'
 
     def test_award_player(self):

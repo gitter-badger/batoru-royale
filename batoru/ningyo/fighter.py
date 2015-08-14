@@ -4,7 +4,7 @@ import random
 
 class Fighter:
 
-    def __init__(self):
+    def __init__(self, attribute_calc):
         self.name = ''
         self.type = 'D'
         self.typeStat = 1
@@ -28,13 +28,20 @@ class Fighter:
 
         self.experience = 0
 
-    def set_experience_calculator(self, experienceCalc):
-        self.experienceCalc = experienceCalc
+        self.experience_modifier = 1000
+
+        self.attributeCalc = attribute_calc
+
+    def set_experience_calculator(self, experience_calc):
+        self.experienceCalc = experience_calc
+
+    def set_attribute_calculator(self, attribute_calc):
+        self.attributeCalc = attribute_calc
 
     def gain_experience(self, opponent_level):
 
         self.experience += self.experienceCalc.calculate_experience_gain(self.level, opponent_level)
-        if self.level_up(self.experienceCalc.calculate_experience_need(self.level)):
+        if self.level_up(self.experienceCalc.calculate_experience_need(self.level, self.experience_modifier)):
             self.level_up_stats()
 
     def level_up(self, calculated_experience):
@@ -74,60 +81,37 @@ class Fighter:
         self.calculate_stats()
 
     def create(self, name, start_level, skill_bonus, strength_bonus, stamina_bonus):
-        self.level = start_level
-
-        stat_lower = 1 * self.level
-        stat_upper = 3 * self.level
 
         if name == '':
             self.name = str(input("Give your character a name: "))
         else:
             self.name = str(name)
 
-        stat_to_use = random.randint(1, 3)
-        stat_to_use_next = random.randint(1, 2)
+        self.level = start_level
 
-        rand_one = random.randint(0, stat_upper)
+        number_attributes = 3
+        attributes_modifier = 1
 
-        rest_rand = stat_upper - int(rand_one)
+        random_attribute_order = self.attributeCalc.choose_attribute_order(number_attributes)
+        random_attribute_values = self.attributeCalc.generate_attribute_values(
+            self.level, number_attributes, attributes_modifier
+        )
 
-        rand_two = random.randint(rest_rand, stat_upper)
+        # Skill is attribute 1
+        # Strength is attribute 2
+        # Stamina is attribute 3
 
-        stat_to_add = stat_lower + int(rand_one) + self.level
+        i = 0
+        while i < number_attributes:
+            if random_attribute_order[i] == 1:
+                self.skill = random_attribute_values[i] + skill_bonus
 
-        stat_to_add_next = stat_lower + int(rand_two)
+            if random_attribute_order[i] == 2:
+                self.strength = random_attribute_values[i] + strength_bonus
 
-        stat_left = int(stat_upper * 4) - int(stat_to_add) - int(stat_to_add_next)
-
-        if stat_to_use == 1:
-
-            self.skill = stat_to_add + skill_bonus
-            if stat_to_use_next == 1:
-                self.strength = stat_to_add_next + strength_bonus
-                self.stamina = stat_left + stamina_bonus
-            else:
-                self.stamina = stat_to_add_next + stamina_bonus
-                self.strength = stat_left + strength_bonus
-
-        elif stat_to_use == 2:
-
-            self.strength = stat_to_add + strength_bonus
-            if stat_to_use_next == 1:
-                self.skill = stat_to_add_next + skill_bonus
-                self.stamina = stat_left + stamina_bonus
-            else:
-                self.stamina = stat_to_add_next + stamina_bonus
-                self.skill = stat_left + skill_bonus
-
-        else:
-
-            self.stamina = stat_to_add + stamina_bonus
-            if stat_to_use_next == 1:
-                self.skill = stat_to_add_next + skill_bonus
-                self.strength = stat_left + strength_bonus
-            else:
-                self.strength = stat_to_add_next + strength_bonus
-                self.skill = stat_left + skill_bonus
+            if random_attribute_order[i] == 3:
+                self.stamina = random_attribute_values[i] + stamina_bonus
+            i += 1
 
         self.calculate_stats()
 

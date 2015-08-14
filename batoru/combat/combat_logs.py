@@ -5,7 +5,7 @@ class CombatLogs:
 
     def __init__(self):
         self.enabledScroll = True
-        self.verboseEvent = False
+        self.verboseEvent = True
         self.logLevel = 1
         self.scrollSpeed = 0.4
 
