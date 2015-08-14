@@ -101,8 +101,7 @@ class Fighter:
         # Strength is attribute 2
         # Stamina is attribute 3
 
-        i = 0
-        while i < number_attributes:
+        for i in range(number_attributes+1):
             if random_attribute_order[i] == 1:
                 self.skill = random_attribute_values[i] + skill_bonus
 
@@ -111,7 +110,6 @@ class Fighter:
 
             if random_attribute_order[i] == 3:
                 self.stamina = random_attribute_values[i] + stamina_bonus
-            i += 1
 
         self.calculate_stats()
 
