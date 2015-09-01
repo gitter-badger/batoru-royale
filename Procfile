@@ -1,1 +1,1 @@
-web: gunicorn batoru.hello:app --log-file=-
+web: gunicorn --pythonpath batoru hello:app --log-file=-
