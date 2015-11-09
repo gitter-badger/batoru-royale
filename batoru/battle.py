@@ -1,6 +1,7 @@
 # import random number functions
 import random
 
+
 from ningyo.fighter import Fighter
 from ningyo.attributes import Attributes
 from ningyo.experience import Experience

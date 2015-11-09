@@ -1,4 +1,5 @@
 import time
+import redis
 
 
 class CombatLogs:
@@ -8,6 +9,7 @@ class CombatLogs:
         self.verboseEvent = True
         self.logLevel = 1
         self.scrollSpeed = 0.4
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
     def scroll(self, winner, looser, damage, gain):
 
@@ -34,8 +36,9 @@ class CombatLogs:
     def log_event(self, text, level):
 
         if level < self.logLevel:
-            with open("battle_log.txt", "a") as charFile:
-                charFile.write(text + "\n")
+
+            self.r.lpush('log', text)
+
             if self.verboseEvent:
                 print(text + "\n")
 
