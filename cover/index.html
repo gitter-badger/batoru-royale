@@ -1,150 +1,164 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+
+
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage report</title>
-    <link rel='stylesheet' href='style.css' type='text/css'>
+    <link rel="stylesheet" href="style.css" type="text/css">
     
-    <script type='text/javascript' src='jquery.min.js'></script>
-    <script type='text/javascript' src='jquery.tablesorter.min.js'></script>
-    <script type='text/javascript' src='jquery.hotkeys.js'></script>
-    <script type='text/javascript' src='coverage_html.js'></script>
-    <script type='text/javascript' charset='utf-8'>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
         jQuery(document).ready(coverage.index_ready);
     </script>
 </head>
-<body id='indexfile'>
+<body class="indexfile">
 
-<div id='header'>
-    <div class='content'>
+<div id="header">
+    <div class="content">
         <h1>Coverage report:
-            <span class='pc_cov'>62%</span>
+            <span class="pc_cov">62%</span>
         </h1>
-        <img id='keyboard_icon' src='keybd_closed.png'>
+
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
     </div>
 </div>
 
-<div class='help_panel'>
-    <img id='panel_icon' src='keybd_open.png'>
-    <p class='legend'>Hot-keys on this page</p>
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
     <div>
-    <p class='keyhelp'>
-        <span class='key'>n</span>
-        <span class='key'>s</span>
-        <span class='key'>m</span>
-        <span class='key'>x</span>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
         
-        <span class='key'>c</span> &nbsp; change column sorting
+        <span class="key">c</span> &nbsp; change column sorting
     </p>
     </div>
 </div>
 
-<div id='index'>
-    <table class='index'>
+<div id="index">
+    <table class="index">
         <thead>
             
-            <tr class='tablehead' title='Click to sort'>
-                <th class='name left headerSortDown shortkey_n'>Module</th>
-                <th class='shortkey_s'>statements</th>
-                <th class='shortkey_m'>missing</th>
-                <th class='shortkey_x'>excluded</th>
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
                 
-                <th class='right shortkey_c'>coverage</th>
+                <th class="right shortkey_c">coverage</th>
             </tr>
         </thead>
         
         <tfoot>
-            <tr class='total'>
-                <td class='name left'>Total</td>
+            <tr class="total">
+                <td class="name left">Total</td>
                 <td>193</td>
                 <td>74</td>
                 <td>0</td>
                 
-                <td class='right'>62%</td>
+                <td class="right" data-ratio="119 193">62%</td>
             </tr>
         </tfoot>
         <tbody>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru.html'>batoru</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_py.html">batoru.py</a></td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 
-                <td class='right'>100%</td>
+                <td class="right" data-ratio="0 0">100%</td>
             </tr>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru_combat.html'>batoru.combat</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_combat_py.html">batoru/combat.py</a></td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 
-                <td class='right'>100%</td>
+                <td class="right" data-ratio="0 0">100%</td>
             </tr>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru_combat_combat_calculations.html'>batoru.combat.combat_calculations</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_combat_combat_calculations_py.html">batoru/combat/combat_calculations.py</a></td>
                 <td>14</td>
                 <td>0</td>
                 <td>0</td>
                 
-                <td class='right'>100%</td>
+                <td class="right" data-ratio="14 14">100%</td>
             </tr>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru_combat_combat_stats.html'>batoru.combat.combat_stats</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_combat_combat_stats_py.html">batoru/combat/combat_stats.py</a></td>
                 <td>13</td>
                 <td>0</td>
                 <td>0</td>
                 
-                <td class='right'>100%</td>
+                <td class="right" data-ratio="13 13">100%</td>
             </tr>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru_ningyo.html'>batoru.ningyo</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_ningyo_py.html">batoru/ningyo.py</a></td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 
-                <td class='right'>100%</td>
+                <td class="right" data-ratio="0 0">100%</td>
             </tr>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru_ningyo_attributes.html'>batoru.ningyo.attributes</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_ningyo_attributes_py.html">batoru/ningyo/attributes.py</a></td>
                 <td>34</td>
                 <td>2</td>
                 <td>0</td>
                 
-                <td class='right'>94%</td>
+                <td class="right" data-ratio="32 34">94%</td>
             </tr>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru_ningyo_experience.html'>batoru.ningyo.experience</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_ningyo_experience_py.html">batoru/ningyo/experience.py</a></td>
                 <td>11</td>
                 <td>0</td>
                 <td>0</td>
                 
-                <td class='right'>100%</td>
+                <td class="right" data-ratio="11 11">100%</td>
             </tr>
             
-            <tr class='file'>
-                <td class='name left'><a href='batoru_ningyo_fighter.html'>batoru.ningyo.fighter</a></td>
+            <tr class="file">
+                <td class="name left"><a href="batoru_ningyo_fighter_py.html">batoru/ningyo/fighter.py</a></td>
                 <td>121</td>
                 <td>72</td>
                 <td>0</td>
                 
-                <td class='right'>40%</td>
+                <td class="right" data-ratio="49 121">40%</td>
             </tr>
             
         </tbody>
     </table>
+
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
 </div>
 
-<div id='footer'>
-    <div class='content'>
+<div id="footer">
+    <div class="content">
         <p>
-            <a class='nav' href='http://nedbatchelder.com/code/coverage'>coverage.py v3.7.1</a>
+            <a class="nav" href="https://coverage.readthedocs.org">coverage.py v4.0.2</a>,
+            created at 2015-11-09 23:29
         </p>
     </div>
 </div>
