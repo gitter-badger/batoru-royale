@@ -1,5 +1,6 @@
 # import random number functions
 import random
+import elasticsearch
 
 
 from ningyo.fighter import Fighter
@@ -12,15 +13,26 @@ from combat.combat_calculations import CombatCalculations
 
 class Battle:
 
+    es = elasticsearch.Elasticsearch()
+
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 3
+        self.levelCap = 2
         self.main()
 
     def main(self):
-        stats = CombatStats()
 
         self.tournament(self.levelCap)
+
+        res = self.es.get(index="stats", doc_type='stat', id=1)
+        print(res['_source'])
+
+        self.es.indices.refresh(index="stats")
+
+        res = self.es.search(index="stats", body={"query": {"match_all": {}}})
+        print("Got %d Hits:" % res['hits']['total'])
+        for hit in res['hits']['hits']:
+            print("%(timestamp)s %(author)s: %(type)s" % hit["_source"])
 
     def tournament(self, rounds):
         fight = CombatLogs()
