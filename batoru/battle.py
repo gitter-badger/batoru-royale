@@ -22,12 +22,6 @@ class Battle:
 
         self.tournament(self.levelCap)
 
-        tournament_stats = stats.get_stats()
-
-        for player in tournament_stats:
-            for player_type in tournament_stats[player]:
-                print(str(player) + " - Type " + str(player_type) + ": " + str(tournament_stats[player][player_type]))
-
     def tournament(self, rounds):
         fight = CombatLogs()
         fight.logLevel = 1
@@ -36,9 +30,9 @@ class Battle:
         player_one.set_experience_calculator(Experience())
         player_two = Fighter(self.attributes)
 
-        fight.log_event("\n******************************************", 0)
+        fight.log_event("tournament", "******************************************", 0)
         player_one.create('Ishino', 1, 0, 0, 0)
-        fight.log_event("------------------------------------------", 0)
+        fight.log_event("tournament", "------------------------------------------", 0)
 
         while player_one.level < rounds:
             event_text = "At level " + str(player_one.level) + " " + player_one.name + " has < "\
@@ -48,7 +42,7 @@ class Battle:
                          + str(player_one.experienceCalc.calculate_experience_need(player_one.level,
                                                                                    player_one.experience_modifier
                                                                                    )) + " >"
-            fight.log_event(event_text, 0)
+            fight.log_event("tournament", event_text, 0)
             lower_opponent_level = player_one.level - 1
             if lower_opponent_level < 1:
                 lower_opponent_level = 1
@@ -58,7 +52,7 @@ class Battle:
             event_text = "At level " + str(player_two.level) + " " + player_two.name + " has < "\
                          + str(player_two.skill) + " ap | " + str(player_two.strength) + " str | "\
                          + str(player_two.stamina) + " sta | " + str(player_two.hitPoints) + " hp >"
-            fight.log_event(event_text, 0)
+            fight.log_event("tournament", event_text, 0)
             self.compete(player_one, player_two)
 
     @staticmethod
@@ -102,17 +96,17 @@ class Battle:
                 fight.scroll(player_two, player_one, 0, 0)
 
             if not player_one.is_alive():
-                event_text = "After " + str(swing) + " swings, " + player_two.name + " won!"\
-                             + "\n******************************************"
-                fight.log_event(event_text, 0)
+                event_text = "After " + str(swing) + " swings, " + player_two.name + " won!"
+                fight.log_event("tournament", event_text, 0)
+                fight.log_event("tournament", "******************************************", 0)
                 stats.register_win(player_two)
                 player_one.calculate_stats()
                 player_two.calculate_stats()
                 return 2
             elif not player_two.is_alive():
-                event_text = "After " + str(swing) + " swings, " + player_one.name + " won!"\
-                             + "\n******************************************"
-                fight.log_event(event_text, 0)
+                event_text = "After " + str(swing) + " swings, " + player_one.name + " won!"
+                fight.log_event("tournament", event_text, 0)
+                fight.log_event("tournament", "******************************************", 0)
                 stats.register_win(player_one)
                 player_one.gain_experience(player_two.level)
                 player_one.calculate_stats()

@@ -18,28 +18,33 @@ class CombatLogs:
 
         if gain > 0:
             if damage > 0:
-                print(winner.name + " has knocked " + str(damage) + " hit points from " + looser.name + "!")
+                self.log_event("Fight", winner.name + " has knocked " + str(damage) + " hit points from " + looser.name + "!", 0)
             else:
-                print(winner.name + " checked " + looser.name + " for weaknesses!")
+                self.log_event("Fight", winner.name + " checked " + looser.name + " for weaknesses!", 0)
 
-            print(winner.name + " gained " + str(gain) + " attack points!")
+            self.log_event("Fight", winner.name + " gained " + str(gain) + " attack points!", 0)
         else:
-            print("Both fighters miss their swings! Pathetic!")
+            self.log_event("Fight", "Both fighters miss their swings! Pathetic!", 0)
 
-        print("After this round " + winner.name + " has < " + str(winner.fightSkill) + " ap | "
-              + str(winner.hitPoints) + " hp >")
-        print("After this round " + looser.name + " has < " + str(looser.fightSkill) + " ap | "
-              + str(looser.hitPoints) + " hp >\n")
+        self.log_event("Fight", "After this round " + winner.name + " has < " + str(winner.fightSkill) + " ap | "
+                       + str(winner.hitPoints) + " hp >", 0)
+        self.log_event("Fight", "After this round " + looser.name + " has < " + str(looser.fightSkill) + " ap | "
+                       + str(looser.hitPoints) + " hp >", 0)
+        self.print_event("\n", 0)
 
         time.sleep(self.scrollSpeed)
 
-    def log_event(self, text, level):
+    def log_event(self, key, text, level):
 
         if level < self.logLevel:
 
-            self.r.lpush('log', text)
+            self.r.lpush(key, text)
 
             if self.verboseEvent:
-                print(text + "\n")
+                self.print_event(text, level)
 
         return
+
+    def print_event(self, text, level):
+        if level < self.logLevel:
+            print(text + "\n")
