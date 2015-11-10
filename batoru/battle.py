@@ -22,7 +22,7 @@ class Battle:
 
     def main(self):
 
-        self.tournament(self.levelCap)
+        self.tournament(self.levelCap, 1)
 
         res = self.es.get(index="stats", doc_type='stat', id=1)
         print(res['_source'])
@@ -32,9 +32,9 @@ class Battle:
         res = self.es.search(index="stats", body={"query": {"match_all": {}}})
         print("Got %d Hits:" % res['hits']['total'])
         for hit in res['hits']['hits']:
-            print("%(timestamp)s %(author)s: %(type)s" % hit["_source"])
+            print("%(timestamp)s %(player)s: %(type)s" % hit["_source"])
 
-    def tournament(self, rounds):
+    def tournament(self, level_goal, tournament_id):
         fight = CombatLogs()
         fight.logLevel = 1
 
@@ -46,7 +46,7 @@ class Battle:
         player_one.create('Ishino', 1, 0, 0, 0)
         fight.log_event("tournament", "------------------------------------------", 0)
 
-        while player_one.level < rounds:
+        while player_one.level < level_goal:
             event_text = "At level " + str(player_one.level) + " " + player_one.name + " has < "\
                          + str(player_one.skill) + " ap | " + str(player_one.strength) + " str | "\
                          + str(player_one.stamina) + " sta | " + str(player_one.hitPoints) + " hp | "\
@@ -65,10 +65,10 @@ class Battle:
                          + str(player_two.skill) + " ap | " + str(player_two.strength) + " str | "\
                          + str(player_two.stamina) + " sta | " + str(player_two.hitPoints) + " hp >"
             fight.log_event("tournament", event_text, 0)
-            self.compete(player_one, player_two)
+            self.compete(tournament_id, player_one, player_two)
 
     @staticmethod
-    def compete(player_one: Fighter, player_two: Fighter):
+    def compete(tournament_id, player_one: Fighter, player_two: Fighter):
 
         fight = CombatLogs()
         fight.enabledScroll = False
@@ -111,7 +111,7 @@ class Battle:
                 event_text = "After " + str(swing) + " swings, " + player_two.name + " won!"
                 fight.log_event("tournament", event_text, 0)
                 fight.log_event("tournament", "******************************************", 0)
-                stats.register_win(player_two)
+                stats.register_win(player_two, tournament_id)
                 player_one.calculate_stats()
                 player_two.calculate_stats()
                 return 2
@@ -119,7 +119,7 @@ class Battle:
                 event_text = "After " + str(swing) + " swings, " + player_one.name + " won!"
                 fight.log_event("tournament", event_text, 0)
                 fight.log_event("tournament", "******************************************", 0)
-                stats.register_win(player_one)
+                stats.register_win(player_one, tournament_id)
                 player_one.gain_experience(player_two.level)
                 player_one.calculate_stats()
                 player_two.calculate_stats()

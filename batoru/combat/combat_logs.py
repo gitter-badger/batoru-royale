@@ -11,16 +11,16 @@ class CombatLogs:
         self.scrollSpeed = 0.4
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-    def scroll(self, winner, looser, damage, gain):
+    def scroll(self, winner, loser, damage, gain):
 
         if not self.enabledScroll:
             return
 
         if gain > 0:
             if damage > 0:
-                self.log_event("Fight", winner.name + " has knocked " + str(damage) + " hit points from " + looser.name + "!", 0)
+                self.log_event("Fight", winner.name + " has knocked " + str(damage) + " hit points from " + loser.name + "!", 0)
             else:
-                self.log_event("Fight", winner.name + " checked " + looser.name + " for weaknesses!", 0)
+                self.log_event("Fight", winner.name + " checked " + loser.name + " for weaknesses!", 0)
 
             self.log_event("Fight", winner.name + " gained " + str(gain) + " attack points!", 0)
         else:
@@ -28,8 +28,8 @@ class CombatLogs:
 
         self.log_event("Fight", "After this round " + winner.name + " has < " + str(winner.fightSkill) + " ap | "
                        + str(winner.hitPoints) + " hp >", 0)
-        self.log_event("Fight", "After this round " + looser.name + " has < " + str(looser.fightSkill) + " ap | "
-                       + str(looser.hitPoints) + " hp >", 0)
+        self.log_event("Fight", "After this round " + loser.name + " has < " + str(loser.fightSkill) + " ap | "
+                       + str(loser.hitPoints) + " hp >", 0)
         self.print_event("\n", 0)
 
         time.sleep(self.scrollSpeed)
