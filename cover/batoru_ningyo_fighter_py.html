@@ -396,11 +396,11 @@
 <p id="t151" class="stm run hide_run">&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">if</span> <span class="nam">int</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">fightSkill</span><span class="op">)</span> <span class="op">&lt;</span> <span class="num">0</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t152" class="stm run hide_run">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="nam">self</span><span class="op">.</span><span class="nam">fightSkill</span> <span class="op">=</span> <span class="num">0</span><span class="strut">&nbsp;</span></p>
 <p id="t153" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t154" class="stm run hide_run">&nbsp; &nbsp; <span class="key">def</span> <span class="nam">is_alive</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t154" class="stm run hide_run">&nbsp; &nbsp; <span class="key">def</span> <span class="nam">is_dead</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t155" class="stm run hide_run">&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">if</span> <span class="nam">int</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">hitPoints</span><span class="op">)</span> <span class="op">&gt;</span> <span class="num">0</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t156" class="stm run hide_run">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="key">return</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
+<p id="t156" class="stm run hide_run">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="key">return</span> <span class="key">False</span><span class="strut">&nbsp;</span></p>
 <p id="t157" class="pln">&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t158" class="stm run hide_run">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="key">return</span> <span class="key">False</span><span class="strut">&nbsp;</span></p>
+<p id="t158" class="stm run hide_run">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="key">return</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
 <p id="t159" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t160" class="stm run hide_run">&nbsp; &nbsp; <span class="key">def</span> <span class="nam">swing</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t161" class="stm mis">&nbsp; &nbsp; &nbsp; &nbsp; <span class="nam">chance</span> <span class="op">=</span> <span class="nam">math</span><span class="op">.</span><span class="nam">floor</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">typeStat</span> <span class="op">+</span> <span class="nam">self</span><span class="op">.</span><span class="nam">fightSkill</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
@@ -426,7 +426,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.org">coverage.py v4.0.2</a>,
-            created at 2015-11-13 18:05
+            created at 2015-11-13 23:58
         </p>
     </div>
 </div>
