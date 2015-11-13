@@ -1,6 +1,7 @@
 # import random number functions
 import random
 import elasticsearch
+import redis
 
 
 from ningyo.fighter import Fighter
@@ -14,15 +15,21 @@ from combat.combat_calculations import CombatCalculations
 class Battle:
 
     es = elasticsearch.Elasticsearch()
+    r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 2
+        self.levelCap = 5
         self.main()
 
     def main(self):
 
-        self.tournament(self.levelCap, 1)
+        self.r.setnx("tournament_id", 0)
+        self.r.incr("tournament_id", 1)
+
+        tournament_id = self.r.get("tournament_id")
+
+        self.tournament(self.levelCap, tournament_id)
 
         res = self.es.get(index="stats", doc_type='stat', id=1)
         print(res['_source'])
@@ -32,7 +39,7 @@ class Battle:
         res = self.es.search(index="stats", body={"query": {"match_all": {}}})
         print("Got %d Hits:" % res['hits']['total'])
         for hit in res['hits']['hits']:
-            print("%(timestamp)s %(player)s: %(type)s" % hit["_source"])
+            print("%(timestamp)s %(name)s: %(type)s" % hit["_source"])
 
     def tournament(self, level_goal, tournament_id):
         fight = CombatLogs()
@@ -45,6 +52,8 @@ class Battle:
         fight.log_event("tournament", "******************************************", 0)
         player_one.create('Ishino', 1, 0, 0, 0)
         fight.log_event("tournament", "------------------------------------------", 0)
+
+        fight_id = 1
 
         while player_one.level < level_goal:
             event_text = "At level " + str(player_one.level) + " " + player_one.name + " has < "\
@@ -65,10 +74,11 @@ class Battle:
                          + str(player_two.skill) + " ap | " + str(player_two.strength) + " str | "\
                          + str(player_two.stamina) + " sta | " + str(player_two.hitPoints) + " hp >"
             fight.log_event("tournament", event_text, 0)
-            self.compete(tournament_id, player_one, player_two)
+            self.compete(str(tournament_id) + "." + str(fight_id), player_one, player_two)
+            fight_id += 1
 
     @staticmethod
-    def compete(tournament_id, player_one: Fighter, player_two: Fighter):
+    def compete(fight_id, player_one: Fighter, player_two: Fighter):
 
         fight = CombatLogs()
         fight.enabledScroll = False
@@ -111,7 +121,7 @@ class Battle:
                 event_text = "After " + str(swing) + " swings, " + player_two.name + " won!"
                 fight.log_event("tournament", event_text, 0)
                 fight.log_event("tournament", "******************************************", 0)
-                stats.register_win(player_two, tournament_id)
+                stats.register_win(player_two, player_one, swing, fight_id)
                 player_one.calculate_stats()
                 player_two.calculate_stats()
                 return 2
@@ -119,7 +129,7 @@ class Battle:
                 event_text = "After " + str(swing) + " swings, " + player_one.name + " won!"
                 fight.log_event("tournament", event_text, 0)
                 fight.log_event("tournament", "******************************************", 0)
-                stats.register_win(player_one, tournament_id)
+                stats.register_win(player_one, player_two, swing, fight_id)
                 player_one.gain_experience(player_two.level)
                 player_one.calculate_stats()
                 player_two.calculate_stats()
