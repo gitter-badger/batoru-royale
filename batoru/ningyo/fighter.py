@@ -151,11 +151,11 @@ class Fighter:
         if int(self.fightSkill) < 0:
             self.fightSkill = 0
 
-    def is_alive(self):
+    def is_dead(self):
         if int(self.hitPoints) > 0:
-            return True
-        else:
             return False
+        else:
+            return True
 
     def swing(self):
         chance = math.floor(self.typeStat + self.fightSkill)

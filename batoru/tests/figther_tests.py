@@ -31,15 +31,15 @@ class TestFighter(unittest.TestCase):
         self.assertEqual(self.player.fightSkill, 0)
         self.assertEqual(self.player.hitPoints, -1)
 
-    def test_is_alive(self):
+    def test_is_dead(self):
         self.player.hitPoints = 1
-        self.assertTrue(self.player.is_alive())
+        self.assertFalse(self.player.is_dead())
 
         self.player.hitPoints = 0
-        self.assertFalse(self.player.is_alive())
+        self.assertTrue(self.player.is_dead())
 
         self.player.hitPoints = -1
-        self.assertFalse(self.player.is_alive())
+        self.assertTrue(self.player.is_dead())
 
     def test_punch(self):
 

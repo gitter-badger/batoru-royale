@@ -19,39 +19,41 @@ class Battle:
 
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 5
+        self.levelCap = 3
+        self.tournament_rounds = 100
         self.main()
 
     def main(self):
 
-        self.r.setnx("tournament_id", 0)
-        self.r.incr("tournament_id", 1)
+        tournament_round = 1
 
-        tournament_id = self.r.get("tournament_id")
+        while tournament_round <= self.tournament_rounds:
+            self.r.setnx("tournament_id", 0)
+            self.r.incr("tournament_id", 1)
 
-        self.tournament(self.levelCap, tournament_id)
+            tournament_id = self.r.get("tournament_id")
 
-        res = self.es.get(index="stats", doc_type='stat', id=1)
-        print(res['_source'])
-
-        self.es.indices.refresh(index="stats")
-
-        res = self.es.search(index="stats", body={"query": {"match_all": {}}})
-        print("Got %d Hits:" % res['hits']['total'])
-        for hit in res['hits']['hits']:
-            print("%(timestamp)s %(name)s: %(type)s" % hit["_source"])
+            self.tournament(self.levelCap, tournament_id)
+            tournament_round += 1
 
     def tournament(self, level_goal, tournament_id):
         fight = CombatLogs()
         fight.logLevel = 1
 
+        stats = CombatStats()
+
         player_one = Fighter(self.attributes)
         player_one.set_experience_calculator(Experience())
         player_two = Fighter(self.attributes)
 
-        fight.log_event("tournament", "******************************************", 0)
+        fight.print_event("******************************************", 0)
         player_one.create('Ishino', 1, 0, 0, 0)
-        fight.log_event("tournament", "------------------------------------------", 0)
+        fight.print_event("Player " + player_one.name + " created: < "\
+                         + str(player_one.skill) + " ap | " + str(player_one.strength) + " str | "\
+                         + str(player_one.stamina) + " sta | " + str(player_one.hitPoints) + " hp >", 0)
+        fight.print_event("------------------------------------------", 0)
+
+        stats.register_creation(player_one)
 
         fight_id = 1
 
@@ -63,26 +65,37 @@ class Battle:
                          + str(player_one.experienceCalc.calculate_experience_need(player_one.level,
                                                                                    player_one.experience_modifier
                                                                                    )) + " >"
-            fight.log_event("tournament", event_text, 0)
+            fight.log_event("tournament", event_text, 1)
             lower_opponent_level = player_one.level - 1
             if lower_opponent_level < 1:
                 lower_opponent_level = 1
             upper_opponent_level = player_one.level + 2
             player_two_level = random.randint(lower_opponent_level, upper_opponent_level)
             player_two.create('Ogre', player_two_level, 0, 0, 0)
+            stats.register_creation(player_two)
             event_text = "At level " + str(player_two.level) + " " + player_two.name + " has < "\
                          + str(player_two.skill) + " ap | " + str(player_two.strength) + " str | "\
                          + str(player_two.stamina) + " sta | " + str(player_two.hitPoints) + " hp >"
-            fight.log_event("tournament", event_text, 0)
+            fight.log_event("tournament", event_text, 1)
             self.compete(str(tournament_id) + "." + str(fight_id), player_one, player_two)
+
+            fight.print_newline = False
+            fight.print_event(".", 0)
+            mod10 = fight_id % 60
+            if mod10 == 0:
+                fight.print_newline = True
+                fight.print_event(" ( " + str(fight_id) + " )", 0)
             fight_id += 1
+
+        fight.print_event("\n", 0)
+
 
     @staticmethod
     def compete(fight_id, player_one: Fighter, player_two: Fighter):
 
         fight = CombatLogs()
         fight.enabledScroll = False
-        fight.logLevel = 1
+        fight.logLevel = 0
 
         stats = CombatStats()
 
@@ -117,23 +130,25 @@ class Battle:
             else:
                 fight.scroll(player_two, player_one, 0, 0)
 
-            if not player_one.is_alive():
-                event_text = "After " + str(swing) + " swings, " + player_two.name + " won!"
-                fight.log_event("tournament", event_text, 0)
-                fight.log_event("tournament", "******************************************", 0)
-                stats.register_win(player_two, player_one, swing, fight_id)
-                player_one.calculate_stats()
-                player_two.calculate_stats()
-                return 2
-            elif not player_two.is_alive():
+            if player_two.is_dead():
                 event_text = "After " + str(swing) + " swings, " + player_one.name + " won!"
                 fight.log_event("tournament", event_text, 0)
                 fight.log_event("tournament", "******************************************", 0)
-                stats.register_win(player_one, player_two, swing, fight_id)
+                stats.register_fight(player_one, player_two, swing, fight_id, 'win')
                 player_one.gain_experience(player_two.level)
                 player_one.calculate_stats()
                 player_two.calculate_stats()
-                return 1
+                return
+
+            if player_one.is_dead():
+                event_text = "After " + str(swing) + " swings, " + player_two.name + " won!"
+                fight.log_event("tournament", event_text, 0)
+                fight.log_event("tournament", "******************************************", 0)
+                stats.register_fight(player_one, player_two, swing, fight_id, 'loss')
+                player_one.calculate_stats()
+                player_two.calculate_stats()
+                return
+
             swing += 1
 
 if __name__ == "__main__":

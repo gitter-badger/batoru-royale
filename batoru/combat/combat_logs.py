@@ -10,6 +10,7 @@ class CombatLogs:
         self.logLevel = 1
         self.scrollSpeed = 0.4
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.print_newline = True
 
     def scroll(self, winner, loser, damage, gain):
 
@@ -43,8 +44,8 @@ class CombatLogs:
             if self.verboseEvent:
                 self.print_event(text, level)
 
-        return
-
     def print_event(self, text, level):
         if level < self.logLevel:
-            print(text + "\n")
+            print(text, end="", flush=True)
+            if self.print_newline:
+                print("\n", end="")
