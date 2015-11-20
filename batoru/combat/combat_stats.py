@@ -10,6 +10,10 @@ class CombatStats:
 
     def register_fight(self, player, opponent, swings, fight_id, outcome):
 
+        outcome_value = -1
+        if outcome == 'win':
+            outcome_value = 1
+
         win_doc = {
             'fighter_name': player.name,
             'fighter_type': player.type,
@@ -19,6 +23,7 @@ class CombatStats:
             'opponent_level': opponent.level,
             'swings': swings,
             'outcome': outcome,
+            'outcome_value': outcome_value,
             'timestamp': datetime.datetime.now(),
         }
 

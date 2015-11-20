@@ -19,8 +19,8 @@ class Battle:
 
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 3
-        self.tournament_rounds = 100
+        self.levelCap = 11
+        self.tournament_rounds = 50
         self.main()
 
     def main(self):
@@ -81,7 +81,7 @@ class Battle:
 
             fight.print_newline = False
             fight.print_event(".", 0)
-            mod10 = fight_id % 60
+            mod10 = fight_id % 200
             if mod10 == 0:
                 fight.print_newline = True
                 fight.print_event(" ( " + str(fight_id) + " )", 0)
