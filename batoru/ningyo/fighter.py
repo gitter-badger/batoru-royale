@@ -1,10 +1,11 @@
 import math
 import random
+from . import Ningyo
 
 
-class Fighter:
-
+class Fighter(Ningyo):
     def __init__(self, attribute_calc):
+        Ningyo.__init__(self, attribute_calc)
         self.name = ''
         self.type = 'D'
         self.typeStat = 1
@@ -163,11 +164,11 @@ class Fighter:
         return accuracy
 
     def punch(self):
-        offence_modifier = (self.strength * self.strengthMultiplier)/self.offenceReduction
+        offence_modifier = (self.strength * self.strengthMultiplier) / self.offenceReduction
         offence = math.floor(math.fabs(self.fightSkill * offence_modifier))
         return offence
 
     def block(self):
-        defence_modifier = (self.stamina * self.staminaMultiplier)/self.defenceReduction
+        defence_modifier = (self.stamina * self.staminaMultiplier) / self.defenceReduction
         defence = math.floor(math.fabs(self.fightSkill * defence_modifier))
         return defence

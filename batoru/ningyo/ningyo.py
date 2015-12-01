@@ -4,7 +4,7 @@ import random
 
 class Ningyo:
 
-    def __init__(self):
+    def __init__(self, attribute_calc):
         self.name = ''
         self.type = ''
         self.typeStat = 1
@@ -23,6 +23,8 @@ class Ningyo:
         self.experience_modifier = 1000
 
         self.number_attributes = 1
+
+        self.attributeCalc = attribute_calc
 
     def set_experience_calculator(self, experience_calc):
         self.experienceCalc = experience_calc

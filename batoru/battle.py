@@ -19,8 +19,8 @@ class Battle:
 
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 11
-        self.tournament_rounds = 50
+        self.levelCap = 2
+        self.tournament_rounds = 1
         self.main()
 
     def main(self):
