@@ -143,21 +143,6 @@ class Fighter(Ningyo):
             self.typeStat = secondary_stat
             self.type = secondary_type
 
-    def award_player(self, skill_modifier):
-        self.fightSkill = int(self.fightSkill) + int(skill_modifier)
-
-    def punish_player(self, damage, skill_modifier):
-        self.hitPoints = int(self.hitPoints) - int(damage)
-        self.fightSkill = int(self.fightSkill) - int(skill_modifier)
-        if int(self.fightSkill) < 0:
-            self.fightSkill = 0
-
-    def is_dead(self):
-        if int(self.hitPoints) > 0:
-            return False
-        else:
-            return True
-
     def swing(self):
         chance = math.floor(self.typeStat + self.fightSkill)
         accuracy = random.randint(0, chance) * self.chanceMultiplier

@@ -111,8 +111,8 @@ class Battle:
                 if damage < 1:
                     damage = 0
 
-                player_one.award_player(skill_modifier)
-                player_two.punish_player(damage, skill_modifier)
+                player_one.empower(skill_modifier)
+                player_two.weaken(damage, skill_modifier)
 
                 fight.scroll(player_one, player_two, damage, skill_modifier)
 
@@ -122,8 +122,8 @@ class Battle:
                 if damage < 1:
                     damage = 0
 
-                player_two.award_player(skill_modifier)
-                player_one.punish_player(damage, skill_modifier)
+                player_two.empower(skill_modifier)
+                player_one.weaken(damage, skill_modifier)
 
                 fight.scroll(player_two, player_one, damage, skill_modifier)
 

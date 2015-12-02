@@ -11,6 +11,7 @@ class Ningyo:
         self.level = 1
 
         self.fightSkill = 1
+        self.skill = 1
 
         self.hitPointsBase = 100
         self.hitPoints = 0
@@ -32,20 +33,14 @@ class Ningyo:
     def set_attribute_calculator(self, attribute_calc):
         self.attributeCalc = attribute_calc
 
-    def set_offence_calculator(self, offence_calc):
-        self.offenceCalc = offence_calc
+    def set_power_calculator(self, power_calc):
+        self.powerCalc = power_calc
 
-    def set_defence_calculator(self, defence_calc):
-        self.defenceCalc = defence_calc
-
-    def set_chance_calculator(self, chance_calc):
-        self.chanceCalc = chance_calc
+    def set_accuarcy_calculator(self, accuarcy_calc):
+        self.accuarcyCalc = accuarcy_calc
 
     def gain_experience(self, opponent_level):
-
         self.experience += self.experienceCalc.calculate_experience_gain(self.level, opponent_level)
-        if self.level_up(self.experienceCalc.calculate_experience_need(self.level, self.experience_modifier)):
-            self.level_up_stats()
 
     def level_up(self, calculated_experience):
         if calculated_experience <= self.experience:
@@ -62,23 +57,19 @@ class Ningyo:
         if int(self.fightSkill) < 0:
             self.fightSkill = 0
 
-    def is_alive(self):
+    def is_dead(self):
         if int(self.hitPoints) > 0:
-            return True
-        else:
             return False
+        return True
 
-    def swing(self):
+    def accuracy(self):
         chance = math.floor(self.typeStat + self.fightSkill)
-        accuracy = random.randint(0, chance) * self.chanceCalc.getChance(self)
-        return accuracy
+        return self.accuarcyCalc.get_accuracy(chance)
 
-    def offensive(self):
-        offence_modifier = (self.offenceCalc.getOffence(self))/self.offenceReduction
-        offence = math.floor(math.fabs(self.fightSkill * offence_modifier))
+    def offence(self):
+        offence = self.powerCalc.get_power(self.skill, self.fightSkill)
         return offence
 
-    def defensive(self):
-        defence_modifier = (self.defenceCalc.getDefence(self))/self.defenceReduction
-        defence = math.floor(math.fabs(self.fightSkill * defence_modifier))
+    def defence(self):
+        defence = self.powerCalc.get_power(self.skill, self.fightSkill)
         return defence
