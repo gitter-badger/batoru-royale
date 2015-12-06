@@ -9,10 +9,9 @@ class Attributes:
 
         attributes_random = []
         for i in range(int(number_of_attributes)):
-            number = random.randint(1, number_of_attributes)
-            while number in attributes_random:
-                number = random.randint(1, number_of_attributes)
-            attributes_random.append(number)
+            attributes_random.append(i)
+
+        random.shuffle(attributes_random)
 
         return attributes_random
 

@@ -6,26 +6,14 @@ from . import Ningyo
 class Fighter(Ningyo):
     def __init__(self, attribute_calc):
         Ningyo.__init__(self, attribute_calc)
-        self.name = ''
         self.type = 'D'
-        self.typeStat = 1
-        self.level = 1
 
-        self.skill = 1
-        self.fightSkill = 1
         self.strength = 1
         self.stamina = 1
-
-        self.hitPointsBase = 100
-
-        self.hitPoints = 0
 
         self.strengthMultiplier = 10
         self.staminaMultiplier = 100
         self.chanceMultiplier = 1
-
-        self.offenceReduction = 100
-        self.defenceReduction = 100
 
         self.experience = 0
 
@@ -83,34 +71,24 @@ class Fighter(Ningyo):
 
     def create(self, name, start_level, skill_bonus, strength_bonus, stamina_bonus):
 
-        if name == '':
-            self.name = str(input("Give your character a name: "))
-        else:
-            self.name = str(name)
+        self.name = str(name)
 
         self.level = start_level
 
         number_attributes = 3
         attributes_modifier = 1
 
-        random_attribute_order = self.attributeCalc.choose_attribute_order(number_attributes)
         random_attribute_values = self.attributeCalc.generate_attribute_values(
             self.level, number_attributes, attributes_modifier
         )
 
-        # Skill is attribute 1
-        # Strength is attribute 2
-        # Stamina is attribute 3
+        random.shuffle(random_attribute_values)
 
-        for i in range(number_attributes):
-            if random_attribute_order[i] == 1:
-                self.skill = random_attribute_values[i] + skill_bonus
+        (self.skill, self.strength, self.stamina) = random_attribute_values
 
-            if random_attribute_order[i] == 2:
-                self.strength = random_attribute_values[i] + strength_bonus
-
-            if random_attribute_order[i] == 3:
-                self.stamina = random_attribute_values[i] + stamina_bonus
+        self.skill += skill_bonus
+        self.strength += strength_bonus
+        self.stamina += stamina_bonus
 
         self.calculate_stats()
 
