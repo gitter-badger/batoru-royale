@@ -1,14 +1,12 @@
-import redis
-import elasticsearch
 import datetime
+
+from interfaces.logger import RedisLogger, ElasticSearchLogger
 
 
 class CombatStats:
 
-    r = redis.StrictRedis(host='localhost', port=6379, db=0)
-    es = elasticsearch.Elasticsearch()
-
-    def register_fight(self, player, opponent, swings, fight_id, outcome):
+    @staticmethod
+    def register_fight(player, opponent, swings, fight_id, outcome):
 
         outcome_value = -1
         if outcome == 'win':
@@ -27,14 +25,15 @@ class CombatStats:
             'timestamp': datetime.datetime.now(),
         }
 
-        self.es.index(index="fights", doc_type='fight', id=fight_id, body=win_doc)
+        elastic_search_logger = ElasticSearchLogger('fights', 'fight')
+        elastic_search_logger.write(fight_id, win_doc)
 
-    def register_creation(self, player):
 
-        self.r.setnx(player.name, 0)
-        self.r.incr(player.name, 1)
+    @staticmethod
+    def register_creation(player):
 
-        character_id = str(self.r.get(player.name))
+        redis_logger = RedisLogger()
+        character_id = redis_logger.load_sequence(player.name)
 
         character_doc = {
             'character_name': player.name,
@@ -43,4 +42,5 @@ class CombatStats:
             'timestamp': datetime.datetime.now(),
         }
 
-        self.es.index(index="creation", doc_type='character', id=character_id, body=character_doc)
+        elastic_search_logger = ElasticSearchLogger('creation', 'character')
+        elastic_search_logger.write(character_id, character_doc)

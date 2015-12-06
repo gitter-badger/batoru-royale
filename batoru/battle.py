@@ -1,37 +1,32 @@
-# import random number functions
-import random
-import elasticsearch
-import redis
-
-
 from ningyo.fighter import Fighter
+from ningyo.monster import Monster
+from ningyo.modifiers import Accuracy, Power
 from ningyo.attributes import Attributes
 from ningyo.experience import Experience
+
 from combat.combat_logs import CombatLogs
 from combat.combat_stats import CombatStats
 from combat.combat_calculations import CombatCalculations
 
+from interfaces.logger import RedisLogger
+
 
 class Battle:
 
-    es = elasticsearch.Elasticsearch()
-    r = redis.StrictRedis(host='localhost', port=6379, db=0)
-
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 2
-        self.tournament_rounds = 1
+        self.levelCap = 3
+        self.tournament_rounds = 3
         self.main()
 
     def main(self):
 
+        logger = RedisLogger()
         tournament_round = 1
 
         while tournament_round <= self.tournament_rounds:
-            self.r.setnx("tournament_id", 0)
-            self.r.incr("tournament_id", 1)
 
-            tournament_id = self.r.get("tournament_id")
+            tournament_id = logger.load_sequence("tournament_id")
 
             self.tournament(self.levelCap, tournament_id)
             tournament_round += 1
@@ -44,10 +39,16 @@ class Battle:
 
         player_one = Fighter(self.attributes)
         player_one.set_experience_calculator(Experience())
-        player_two = Fighter(self.attributes)
+        player_one.set_accuarcy_calculator(Accuracy())
+        player_one.set_power_calculator(Power())
+
+        player_two = Monster(self.attributes)
+        player_two.set_accuarcy_calculator(Accuracy())
+        player_two.set_power_calculator(Power())
+
+        player_one.create('Ishino', 1, 0, 0, 0)
 
         fight.print_event("******************************************", 0)
-        player_one.create('Ishino', 1, 0, 0, 0)
         fight.print_event("Player " + player_one.name + " created: < "\
                          + str(player_one.skill) + " ap | " + str(player_one.strength) + " str | "\
                          + str(player_one.stamina) + " sta | " + str(player_one.hitPoints) + " hp >", 0)
@@ -66,12 +67,9 @@ class Battle:
                                                                                    player_one.experience_modifier
                                                                                    )) + " >"
             fight.log_event("tournament", event_text, 1)
-            lower_opponent_level = player_one.level - 1
-            if lower_opponent_level < 1:
-                lower_opponent_level = 1
-            upper_opponent_level = player_one.level + 2
-            player_two_level = random.randint(lower_opponent_level, upper_opponent_level)
-            player_two.create('Ogre', player_two_level, 0, 0, 0)
+
+            player_two.generate('Ogre', player_one.level)
+
             stats.register_creation(player_two)
             event_text = "At level " + str(player_two.level) + " " + player_two.name + " has < "\
                          + str(player_two.skill) + " ap | " + str(player_two.strength) + " str | "\
@@ -91,7 +89,7 @@ class Battle:
 
 
     @staticmethod
-    def compete(fight_id, player_one: Fighter, player_two: Fighter):
+    def compete(fight_id, hero: Fighter, mob: Monster):
 
         fight = CombatLogs()
         fight.enabledScroll = False
@@ -102,51 +100,49 @@ class Battle:
         swing = 1
 
         while True:
-            skill_modifier = CombatCalculations.calc_modifier(player_one.typeStat, player_two.typeStat, 0.2)
+            skill_modifier = CombatCalculations.calc_modifier(hero.typeStat, mob.typeStat, 0.2)
 
-            result = CombatCalculations.get_highest(int(player_one.swing()), int(player_two.swing()))
+            result = CombatCalculations.get_highest(int(hero.accuracy()), int(mob.accuracy()))
             if result == 1:
 
-                damage = player_one.punch() - player_two.block()
+                damage = hero.offence() - mob.defence()
                 if damage < 1:
                     damage = 0
 
-                player_one.empower(skill_modifier)
-                player_two.weaken(damage, skill_modifier)
+                hero.empower(skill_modifier)
+                mob.weaken(damage, skill_modifier)
 
-                fight.scroll(player_one, player_two, damage, skill_modifier)
+                fight.scroll(hero, mob, damage, skill_modifier)
 
             elif result == 2:
 
-                damage = player_two.punch() - player_one.block()
+                damage = mob.offence() - hero.defence()
                 if damage < 1:
                     damage = 0
 
-                player_two.empower(skill_modifier)
-                player_one.weaken(damage, skill_modifier)
+                mob.empower(skill_modifier)
+                hero.weaken(damage, skill_modifier)
 
-                fight.scroll(player_two, player_one, damage, skill_modifier)
+                fight.scroll(mob, hero, damage, skill_modifier)
 
             else:
-                fight.scroll(player_two, player_one, 0, 0)
+                fight.scroll(mob, hero, 0, 0)
 
-            if player_two.is_dead():
-                event_text = "After " + str(swing) + " swings, " + player_one.name + " won!"
+            if mob.is_dead():
+                event_text = "After " + str(swing) + " swings, " + hero.name + " won!"
                 fight.log_event("tournament", event_text, 0)
                 fight.log_event("tournament", "******************************************", 0)
-                stats.register_fight(player_one, player_two, swing, fight_id, 'win')
-                player_one.gain_experience(player_two.level)
-                player_one.calculate_stats()
-                player_two.calculate_stats()
+                stats.register_fight(hero, mob, swing, fight_id, 'win')
+                hero.gain_experience(mob.level)
+                hero.calculate_stats()
                 return
 
-            if player_one.is_dead():
-                event_text = "After " + str(swing) + " swings, " + player_two.name + " won!"
+            if hero.is_dead():
+                event_text = "After " + str(swing) + " swings, " + mob.name + " won!"
                 fight.log_event("tournament", event_text, 0)
                 fight.log_event("tournament", "******************************************", 0)
-                stats.register_fight(player_one, player_two, swing, fight_id, 'loss')
-                player_one.calculate_stats()
-                player_two.calculate_stats()
+                stats.register_fight(hero, mob, swing, fight_id, 'loss')
+                hero.calculate_stats()
                 return
 
             swing += 1
