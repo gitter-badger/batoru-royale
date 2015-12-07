@@ -4,7 +4,6 @@ import elasticsearch
 
 
 class Logger:
-
     def __init__(self):
         self.logLevel = 1
         self.logFile = 'info.log'
@@ -18,7 +17,6 @@ class Logger:
 
 
 class RedisLogger(Logger):
-
     def __init__(self):
         Logger.__init__(self)
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -34,7 +32,6 @@ class RedisLogger(Logger):
 
 
 class ElasticSearchLogger(Logger):
-
     def __init__(self, index, doc_type):
         Logger.__init__(self)
         self.elasticsearch = elasticsearch.Elasticsearch()
@@ -43,3 +40,22 @@ class ElasticSearchLogger(Logger):
 
     def write(self, key, value):
         self.elasticsearch.index(index=self.index, doc_type=self.doc_type, id=str(key), body=value)
+
+    def load_sequence(self):
+        document = self.elasticsearch.search(index=self.index, body=
+        {
+            "query": {
+                "match_all": {}
+            },
+            "size": 1,
+            "sort": [
+                {
+                    "_timestamp": {
+                        "order": "desc"
+                    }
+                }
+            ],
+            "fields": ["_id"]
+        })
+
+        return value
