@@ -12,7 +12,7 @@ celery.conf.update(app.config)
 
 @app.route("/")
 def hello():
-    return "Testing:"
+    return "Eat my shorts Dave!"
 
 
 @celery.task(bind=True)
