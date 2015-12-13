@@ -1,3 +1,5 @@
+from interfaces.logger import RedisLogger
+
 from ningyo.fighter import Fighter
 from ningyo.monster import Monster
 from ningyo.modifiers import Accuracy, Power
@@ -8,15 +10,15 @@ from combat.combat_logs import CombatLogs
 from combat.combat_stats import CombatStats
 from combat.combat_calculations import CombatCalculations
 
-from interfaces.logger import RedisLogger
+from tournament.tournament import Tournament
 
 
 class Battle:
 
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 3
-        self.tournament_rounds = 3
+        self.levelCap = 7
+        self.tournament_rounds = 1
         self.main()
 
     def main(self):
@@ -32,21 +34,18 @@ class Battle:
             tournament_round += 1
 
     def tournament(self, level_goal, tournament_id):
+        tournament = Tournament()
+
         fight = CombatLogs()
         fight.logLevel = 1
 
         stats = CombatStats()
 
-        player_one = Fighter(self.attributes)
-        player_one.set_experience_calculator(Experience())
-        player_one.set_accuarcy_calculator(Accuracy())
-        player_one.set_power_calculator(Power())
+        player_one = tournament.load_player('Ishino')
 
         player_two = Monster(self.attributes)
         player_two.set_accuarcy_calculator(Accuracy())
         player_two.set_power_calculator(Power())
-
-        player_one.create('Ishino', 1, 0, 0, 0)
 
         fight.print_event("******************************************", 0)
         fight.print_event("Player " + player_one.name + " created: < "\
@@ -66,7 +65,7 @@ class Battle:
                          + str(player_one.experienceCalc.calculate_experience_need(player_one.level,
                                                                                    player_one.experience_modifier
                                                                                    )) + " >"
-            fight.log_event("tournament", event_text, 1)
+            fight.print_event(event_text, 1)
 
             player_two.generate('Ogre', player_one.level)
 
@@ -74,7 +73,7 @@ class Battle:
             event_text = "At level " + str(player_two.level) + " " + player_two.name + " has < "\
                          + str(player_two.skill) + " ap | " + str(player_two.strength) + " str | "\
                          + str(player_two.stamina) + " sta | " + str(player_two.hitPoints) + " hp >"
-            fight.log_event("tournament", event_text, 1)
+            fight.print_event(event_text, 1)
             self.compete(str(tournament_id) + "." + str(fight_id), player_one, player_two)
 
             fight.print_newline = False
@@ -86,6 +85,8 @@ class Battle:
             fight_id += 1
 
         fight.print_event("\n", 0)
+
+        tournament.save_player(player_one)
 
 
     @staticmethod
