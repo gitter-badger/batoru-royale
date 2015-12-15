@@ -7,6 +7,9 @@ class Monster(Ningyo):
     def __init__(self, attribute_calc):
         Ningyo.__init__(self, attribute_calc)
 
+        self.levelDown = 1
+        self.levelUp = 2
+
         self.strength = 1
         self.stamina = 1
 
@@ -16,15 +19,17 @@ class Monster(Ningyo):
 
         self.attributeCalc = attribute_calc
 
+        self.ability = 0
+
     def set_attribute_calculator(self, attribute_calc):
         self.attributeCalc = attribute_calc
 
     def generate(self, name, level):
 
-        lower_opponent_level = level - 1
+        lower_opponent_level = level - self.levelDown
         if lower_opponent_level < 1:
             lower_opponent_level = 1
-        upper_opponent_level = level + 2
+        upper_opponent_level = level + self.levelUp
 
         monster_level = random.randint(lower_opponent_level, upper_opponent_level)
 
@@ -74,17 +79,8 @@ class Monster(Ningyo):
             self.typeStat = secondary_stat
             self.type = secondary_type
 
-    def swing(self):
-        chance = math.floor(self.typeStat + self.fightSkill)
-        accuracy = random.randint(0, chance) * self.chanceMultiplier
-        return accuracy
+    def empower(self, skill_modifier, round):
+        Ningyo.empower(self, skill_modifier, 1)
 
-    def punch(self):
-        offence_modifier = (self.strength * self.strengthMultiplier) / self.offenceReduction
-        offence = math.floor(math.fabs(self.fightSkill * offence_modifier))
-        return offence
-
-    def block(self):
-        defence_modifier = (self.stamina * self.staminaMultiplier) / self.defenceReduction
-        defence = math.floor(math.fabs(self.fightSkill * defence_modifier))
-        return defence
+    def weaken(self, damage, skill_modifier, round):
+        Ningyo.weaken(self, damage, skill_modifier, 1)

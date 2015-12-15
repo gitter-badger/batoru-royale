@@ -120,18 +120,3 @@ class Fighter(Ningyo):
         if secondary_stat > primary_stat:
             self.typeStat = secondary_stat
             self.type = secondary_type
-
-    def swing(self):
-        chance = math.floor(self.typeStat + self.fightSkill)
-        accuracy = random.randint(0, chance) * self.chanceMultiplier
-        return accuracy
-
-    def punch(self):
-        offence_modifier = (self.strength * self.strengthMultiplier) / self.offenceReduction
-        offence = math.floor(math.fabs(self.fightSkill * offence_modifier))
-        return offence
-
-    def block(self):
-        defence_modifier = (self.stamina * self.staminaMultiplier) / self.defenceReduction
-        defence = math.floor(math.fabs(self.fightSkill * defence_modifier))
-        return defence

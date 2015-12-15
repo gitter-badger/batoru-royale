@@ -4,7 +4,6 @@ from ningyo.fighter import Fighter
 from ningyo.monster import Monster
 from ningyo.modifiers import Accuracy, Power
 from ningyo.attributes import Attributes
-from ningyo.experience import Experience
 
 from combat.combat_logs import CombatLogs
 from combat.combat_stats import CombatStats
@@ -17,8 +16,8 @@ class Battle:
 
     def __init__(self):
         self.attributes = Attributes()
-        self.levelCap = 7
-        self.tournament_rounds = 1
+        self.levelCap = 6
+        self.tournament_rounds = 3
         self.main()
 
     def main(self):
@@ -30,10 +29,10 @@ class Battle:
 
             tournament_id = logger.load_sequence("tournament_id")
 
-            self.tournament(self.levelCap, tournament_id)
+            self.tournament(self.levelCap, tournament_id, tournament_round)
             tournament_round += 1
 
-    def tournament(self, level_goal, tournament_id):
+    def tournament(self, level_goal, tournament_id, tournament_round):
         tournament = Tournament()
 
         fight = CombatLogs()
@@ -41,7 +40,7 @@ class Battle:
 
         stats = CombatStats()
 
-        player_one = tournament.load_player('Ishino')
+        player_one = tournament.load_player('Ishino_' + str(tournament_round))
 
         player_two = Monster(self.attributes)
         player_two.set_accuarcy_calculator(Accuracy())
@@ -110,8 +109,8 @@ class Battle:
                 if damage < 1:
                     damage = 0
 
-                hero.empower(skill_modifier)
-                mob.weaken(damage, skill_modifier)
+                hero.empower(skill_modifier, swing)
+                mob.weaken(damage, skill_modifier, swing)
 
                 fight.scroll(hero, mob, damage, skill_modifier)
 
@@ -121,8 +120,8 @@ class Battle:
                 if damage < 1:
                     damage = 0
 
-                mob.empower(skill_modifier)
-                hero.weaken(damage, skill_modifier)
+                mob.empower(skill_modifier, swing)
+                hero.weaken(damage, skill_modifier, swing)
 
                 fight.scroll(mob, hero, damage, skill_modifier)
 
